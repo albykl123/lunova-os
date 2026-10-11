@@ -6,5 +6,5 @@ Comment=Welcome to Lunova OS 1.0 Aurora
 Exec=lunova-welcome
 Icon=lunova-icon
 Terminal=false
-Categories=Qt;System;Utility;
+Categories=Qt;System;
 StartupNotify=true

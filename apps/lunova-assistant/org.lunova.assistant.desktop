@@ -6,5 +6,5 @@ Comment=Optional desktop AI assistant with local privacy and command authorizati
 Exec=lunova-assistant
 Icon=lunova-icon
 Terminal=false
-Categories=Qt;System;Utility;
+Categories=Qt;Utility;
 StartupNotify=true

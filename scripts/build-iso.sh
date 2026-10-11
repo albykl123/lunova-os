@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ==============================================================================
 # Lunova OS 1.0 Aurora - Master ISO Build Automation Script
 # ==============================================================================
@@ -82,8 +82,8 @@ cat <<EOF > "$DIST_DIR/build-manifest.json"
     "codename": "Aurora",
     "edition": "Desktop",
     "architecture": "x86_64",
-    "base": "Debian GNU/Linux 12 (Bookworm)",
-    "desktop": "KDE Plasma 5.27 LTS",
+    "base": "Debian GNU/Linux 13 (Trixie)",
+    "desktop": "KDE Plasma 6",
     "displayServer": "Wayland (X11 fallback)",
     "displayManager": "SDDM",
     "installer": "Calamares"
@@ -110,7 +110,7 @@ cat <<EOF > "$DIST_DIR/build-report.md"
 - **Target ISO:** \`$ISO_NAME\`
 - **Size:** ${ISO_SIZE_MB} MB ($ISO_SIZE_BYTES bytes)
 - **SHA-256 Checksum:** \`$SHA256_HASH\`
-- **Base Distribution:** Debian GNU/Linux 12 (Bookworm)
+- **Base Distribution:** Debian GNU/Linux 13 (Trixie)
 - **Desktop Environment:** KDE Plasma with Aurora Glass Design
 - **Installer:** Calamares 3.2+
 - **Build Duration:** ${DURATION} seconds

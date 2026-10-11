@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ==============================================================================
 # Lunova OS 1.0 Aurora - Live-Build Configuration Generator (Debian 13 Trixie)
 # ==============================================================================
@@ -30,6 +30,13 @@ lb config \
     --parent-distribution trixie \
     --architecture amd64 \
     --archive-areas "main contrib non-free non-free-firmware" \
+    --mirror-bootstrap "http://deb.debian.org/debian/" \
+    --mirror-chroot "http://deb.debian.org/debian/" \
+    --mirror-binary "http://deb.debian.org/debian/" \
+    --parent-mirror-bootstrap "http://deb.debian.org/debian/" \
+    --parent-mirror-chroot "http://deb.debian.org/debian/" \
+    --parent-mirror-binary "http://deb.debian.org/debian/" \
+    --keyring-packages "debian-archive-keyring" \
     --binary-images iso-hybrid \
     --bootloaders "grub-efi,syslinux" \
     --bootappend-live "boot=live components quiet splash username=live hostname=lunova-live" \

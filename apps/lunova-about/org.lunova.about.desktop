@@ -6,5 +6,5 @@ Comment=View system and hardware specifications for Lunova OS
 Exec=lunova-about
 Icon=lunova-icon
 Terminal=false
-Categories=Qt;System;Utility;
+Categories=Qt;System;
 StartupNotify=true

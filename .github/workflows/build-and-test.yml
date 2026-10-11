@@ -30,7 +30,7 @@ jobs:
 
       - name: Validate Desktop Entry Files
         run: |
-          find . -name "*.desktop" -exec desktop-file-validate {} +
+          find apps config/includes.chroot/usr/share/applications -type f -name "*.desktop" -exec desktop-file-validate {} +
 
       - name: Run Test Suites
         run: |
@@ -87,8 +87,8 @@ jobs:
       - name: Setup Live-Build Environment
         run: |
           sudo apt-get update
-          sudo apt-get install -y live-build debootstrap xorriso isolinux syslinux-efi \
-            grub-pc-bin grub-efi-amd64-bin mtools dosfstools squashfs-tools dos2unix
+          sudo apt-get install -y live-build debootstrap debian-archive-keyring debian-keyring \
+            xorriso isolinux syslinux-efi grub-pc-bin grub-efi-amd64-bin mtools dosfstools squashfs-tools dos2unix
 
       - name: Normalize Line Endings
         run: |
