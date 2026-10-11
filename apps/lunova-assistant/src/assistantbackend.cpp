@@ -115,7 +115,8 @@ void AssistantBackend::sendMessage(const QString &userText)
     emit statusChanged();
 
     // Prepare HTTP Request
-    QNetworkRequest request(QUrl(m_endpointUrl));
+    QUrl targetUrl(m_endpointUrl);
+    QNetworkRequest request(targetUrl);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     if (!m_apiKey.isEmpty()) {
         request.setRawHeader("Authorization", ("Bearer " + m_apiKey).toUtf8());

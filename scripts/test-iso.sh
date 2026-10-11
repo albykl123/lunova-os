@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ==============================================================================
 # Lunova OS 1.0 Aurora - Automated Virtual Machine Test Harness
 # ==============================================================================
@@ -70,6 +70,7 @@ echo "  Network: VirtIO User NAT"
 echo "=================================================================="
 
 # Launch QEMU
+# shellcheck disable=SC2086
 qemu-system-x86_64 \
     $KVM_FLAG \
     $OVMF_OPTS \

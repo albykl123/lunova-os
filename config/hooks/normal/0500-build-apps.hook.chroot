@@ -1,4 +1,4 @@
-﻿#!/bin/sh
+#!/bin/sh
 set -e
 
 echo "==> Building and installing Lunova Native Applications..."
@@ -11,7 +11,7 @@ for app in $APPS; do
         mkdir -p "/tmp/lunova-apps/$app/build"
         cd "/tmp/lunova-apps/$app/build"
         cmake .. -DCMAKE_INSTALL_PREFIX=/usr || true
-        make -j$(nproc) || true
+        make -j"$(nproc)" || true
         make install || true
     fi
 done
