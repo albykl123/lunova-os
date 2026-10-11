@@ -11,8 +11,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-1.0.0--Aurora-5478FF?style=flat-square" alt="Version">
-  <img src="https://img.shields.io/badge/Base-Debian%2012%20Bookworm-D70A53?style=flat-square" alt="Debian">
-  <img src="https://img.shields.io/badge/Desktop-KDE%20Plasma%205.27%20LTS-1D99F3?style=flat-square" alt="KDE Plasma">
+  <img src="https://img.shields.io/badge/Base-Debian%2013%20Trixie-D70A53?style=flat-square" alt="Debian">
+  <img src="https://img.shields.io/badge/Desktop-KDE%20Plasma%206-1D99F3?style=flat-square" alt="KDE Plasma">
   <img src="https://img.shields.io/badge/Architecture-x86--64-59D9F8?style=flat-square" alt="Architecture">
   <img src="https://img.shields.io/badge/Design-Aurora%20Glass-9270FF?style=flat-square" alt="Aurora Glass">
   <img src="https://img.shields.io/badge/License-GPL--3.0-green?style=flat-square" alt="License">
@@ -30,8 +30,8 @@
 | **Codename** | Aurora |
 | **Tagline** | *Beyond the Desktop.* |
 | **Architecture** | x86-64 / amd64 |
-| **Foundation** | Debian GNU/Linux 12 (Bookworm) |
-| **Desktop Environment** | KDE Plasma 5.27 LTS |
+| **Foundation** | Debian GNU/Linux 13 (Trixie) |
+| **Desktop Environment** | KDE Plasma 6 |
 | **Display Server** | Wayland (with X11 compatibility fallback) |
 | **Window Manager** | KWin |
 | **Display Manager** | SDDM |

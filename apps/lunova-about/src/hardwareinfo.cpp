@@ -15,7 +15,7 @@ HardwareInfo::HardwareInfo(QObject *parent)
 void HardwareInfo::probeSystem()
 {
     m_osVersion = "Lunova OS 1.0.0 Aurora";
-    m_debianBase = "Debian GNU/Linux 12 (Bookworm)";
+    m_debianBase = "Debian GNU/Linux 13 (Trixie)";
     m_licenseNotice = "Lunova OS components are licensed under GPLv3, LGPLv3, and MIT. Based on Debian GNU/Linux.";
 
     // 1. Architecture and Kernel Release
@@ -24,7 +24,7 @@ void HardwareInfo::probeSystem()
         m_kernelVersion = QString::fromLatin1(buf.release);
         m_architecture = QString::fromLatin1(buf.machine);
     } else {
-        m_kernelVersion = "Linux 6.1.0-amd64";
+        m_kernelVersion = "Linux 6.12.0-amd64";
         m_architecture = "x86_64";
     }
 

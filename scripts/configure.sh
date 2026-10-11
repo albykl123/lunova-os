@@ -22,6 +22,13 @@ cd "$ROOT_DIR"
 echo "[*] Cleaning any previous live-build state..."
 lb clean --purge || true
 
+BOOTLOADER_PARAM="--bootloaders"
+BOOTLOADER_VAL="grub-efi,syslinux"
+if ! lb config --help 2>&1 | grep -q -- '--bootloaders'; then
+    BOOTLOADER_PARAM="--bootloader"
+    BOOTLOADER_VAL="syslinux"
+fi
+
 echo "[*] Initializing Debian live-build for Lunova OS (Debian 13 Trixie, amd64)..."
 lb config \
     --mode debian \
@@ -38,7 +45,7 @@ lb config \
     --parent-mirror-binary "http://deb.debian.org/debian/" \
     --keyring-packages "debian-archive-keyring" \
     --binary-images iso-hybrid \
-    --bootloaders "grub-efi,syslinux" \
+    "$BOOTLOADER_PARAM" "$BOOTLOADER_VAL" \
     --bootappend-live "boot=live components quiet splash username=live hostname=lunova-live" \
     --iso-application "Lunova OS 1.0 Aurora" \
     --iso-publisher "Lunova OS Engineering Team" \
@@ -49,8 +56,7 @@ lb config \
     --win32-loader false \
     --apt-indices false \
     --apt-recommends true \
-    --security true \
-    --updates true
+    --security true
 
 echo "[*] Synchronizing Lunova configurations to live-build..."
 mkdir -p "$ROOT_DIR/config/package-lists"

@@ -8,8 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2026-10-11 - Codename "Aurora"
 
 ### Added
-- **Base Distribution**: Debian GNU/Linux 12 ("Bookworm") stable foundation with Linux 6.1+ kernel (amd64).
-- **Desktop Environment**: KDE Plasma 5.27 LTS / Wayland session with X11 fallback, KWin compositor, and SDDM display manager.
+- **Base Distribution**: Debian GNU/Linux 13 ("Trixie") stable foundation with Linux 6.12+ kernel (amd64).
+- **Desktop Environment**: KDE Plasma 6 / Wayland session with X11 fallback, KWin compositor, and SDDM display manager.
 - **Aurora Glass Design Language**:
   - Original geometric Lunova branding (crescent moon, orbital ring, aurora light wave).
   - High-resolution SVG wallpapers in dark and light modes.

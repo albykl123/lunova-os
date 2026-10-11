@@ -11,7 +11,7 @@ This document defines the release lifecycle, distribution artifacts, and release
 - **Codename:** Aurora
 - **Edition:** Lunova OS Desktop
 - **Architecture:** x86-64 / amd64
-- **Base:** Debian GNU/Linux 12 ("Bookworm")
+- **Base:** Debian GNU/Linux 13 ("Trixie")
 - **Target ISO File:** `Lunova-OS-1.0.0-Aurora-amd64.iso`
 
 ---

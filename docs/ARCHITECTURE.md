@@ -35,8 +35,8 @@ This document describes the architectural layers, system components, and integra
 ## 2. Core Subsystems
 
 ### Base Operating System & Packaging
-- **Foundation:** Debian 12 ("Bookworm") stable distribution.
-- **Kernel:** `linux-image-amd64` (Linux 6.1 LTS).
+- **Foundation:** Debian 13 ("Trixie") stable distribution.
+- **Kernel:** `linux-image-amd64` (Linux 6.12 LTS).
 - **Init System:** `systemd` v252 with `systemd-timesyncd` and `systemd-resolved`.
 - **Package Management:** `apt` / `dpkg` with official Debian stable and security mirrors. Flatpak integration enabled by default with Flathub access.
 

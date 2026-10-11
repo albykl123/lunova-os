@@ -176,7 +176,7 @@ ApplicationWindow {
                                 anchors.fill: parent
                                 anchors.margins: 20
                                 Text { text: "Debian Rock-Solid Core"; font.pixelSize: 16; font.weight: Font.Bold; color: "#5478FF" }
-                                Text { text: "Debian 12 Bookworm base with modern PipeWire and Wayland."; color: "#A7B2C9"; wrapMode: Text.WordWrap; Layout.fillWidth: true }
+                                Text { text: "Debian 13 Trixie foundation with KDE Plasma 6, PipeWire, and Wayland."; color: "#A7B2C9"; wrapMode: Text.WordWrap; Layout.fillWidth: true }
                             }
                         }
                     }

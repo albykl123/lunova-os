@@ -8,7 +8,7 @@ This guide provides complete, reproducible instructions for building the bootabl
 
 Building a genuine Debian live ISO requires:
 - **Architecture:** x86-64 / amd64
-- **Operating System:** Native Debian GNU/Linux 12 (Bookworm), Ubuntu 22.04 LTS+, or a Linux container/VM with root privileges
+- **Operating System:** Native Debian GNU/Linux 13 (Trixie), Ubuntu 24.04 LTS+, or a Linux container/VM with root privileges
 - **Storage:** At least 25 GB free disk space
 - **Memory:** 4 GB RAM minimum (8 GB recommended)
 - **Privileges:** `root` or `sudo` access (required for `debootstrap`, `chroot`, loop devices, and filesystem overlay mounting)
@@ -60,7 +60,7 @@ sudo ./scripts/install-dependencies.sh
 ```bash
 sudo ./scripts/configure.sh
 ```
-This runs `lb config` targeting Debian 12 Bookworm, amd64, Linux 6.1 kernel, KDE Plasma desktop, and synchronizes the Lunova chroot overlays and package lists.
+This runs `lb config` targeting Debian 13 Trixie, amd64, Linux 6.12 kernel, KDE Plasma desktop, and synchronizes the Lunova chroot overlays and package lists.
 
 ### Step 3: Run the Live Build
 ```bash

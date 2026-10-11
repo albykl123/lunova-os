@@ -77,6 +77,21 @@ jobs:
           mkdir -p apps/lunova-update/build && cd apps/lunova-update/build
           cmake .. && make
 
+      - name: Stage Compiled Binaries
+        run: |
+          mkdir -p bin-artifacts
+          cp apps/lunova-welcome/build/lunova-welcome bin-artifacts/
+          cp apps/lunova-about/build/lunova-about bin-artifacts/
+          cp apps/lunova-control-center/build/lunova-control-center bin-artifacts/
+          cp apps/lunova-assistant/build/lunova-assistant bin-artifacts/
+          cp apps/lunova-update/build/lunova-update bin-artifacts/
+
+      - name: Upload Native Binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: lunova-binaries
+          path: bin-artifacts/
+
   build-live-iso:
     runs-on: ubuntu-latest
     needs: [lint-and-validate, compile-native-apps]
@@ -84,25 +99,16 @@ jobs:
       - name: Checkout Source Tree
         uses: actions/checkout@v4
 
-      - name: Setup Live-Build Environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y live-build debootstrap debian-archive-keyring debian-keyring \
-            xorriso isolinux syslinux-efi grub-pc-bin grub-efi-amd64-bin mtools dosfstools squashfs-tools dos2unix
+      - name: Download Native Binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: lunova-binaries
+          path: config/includes.chroot/usr/bin
 
-      - name: Normalize Line Endings
+      - name: Build Lunova OS Live ISO via Docker (Debian 13 Trixie)
         run: |
-          find . -name "*.sh" -exec dos2unix {} +
-          find . -name "*.hook.chroot" -exec dos2unix {} +
-          sudo chmod +x scripts/*.sh tests/*.sh config/hooks/normal/*.hook.chroot
-
-      - name: Configure Live-Build
-        run: |
-          sudo ./scripts/configure.sh
-
-      - name: Build Lunova OS Live ISO
-        run: |
-          sudo ./scripts/build-iso.sh
+          chmod +x config/includes.chroot/usr/bin/lunova-* || true
+          docker run --privileged --rm -v "$GITHUB_WORKSPACE":/build -w /build debian:trixie /build/scripts/build-in-docker.sh
 
       - name: Verify Checksums
         run: |

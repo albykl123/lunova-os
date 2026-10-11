@@ -1,13 +1,16 @@
 #!/bin/sh
 set -e
 
-echo "==> Building and installing Lunova Native Applications..."
+echo "==> Configuring Lunova Native Applications..."
 
 APPS="lunova-welcome lunova-about lunova-control-center lunova-assistant lunova-update"
 
 for app in $APPS; do
-    if [ -d "/tmp/lunova-apps/$app" ]; then
-        echo "Building $app..."
+    if [ -x "/usr/bin/$app" ]; then
+        echo "  [OK] Precompiled binary found: /usr/bin/$app"
+        chmod +x "/usr/bin/$app"
+    elif [ -d "/tmp/lunova-apps/$app" ] && command -v cmake >/dev/null 2>&1; then
+        echo "  [*] Compiling $app from source in chroot..."
         mkdir -p "/tmp/lunova-apps/$app/build"
         cd "/tmp/lunova-apps/$app/build"
         cmake .. -DCMAKE_INSTALL_PREFIX=/usr || true
@@ -16,8 +19,7 @@ for app in $APPS; do
     fi
 done
 
-# Clean up build artifacts from chroot filesystem
-echo "==> Cleaning temporary build files..."
+# Clean up temporary build source files from chroot filesystem
 rm -rf /tmp/lunova-apps
 
-echo "==> Lunova Native Applications installation complete."
+echo "==> Lunova Native Applications configuration complete."
