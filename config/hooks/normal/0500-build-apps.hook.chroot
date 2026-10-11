@@ -1,0 +1,23 @@
+﻿#!/bin/sh
+set -e
+
+echo "==> Building and installing Lunova Native Applications..."
+
+APPS="lunova-welcome lunova-about lunova-control-center lunova-assistant lunova-update"
+
+for app in $APPS; do
+    if [ -d "/tmp/lunova-apps/$app" ]; then
+        echo "Building $app..."
+        mkdir -p "/tmp/lunova-apps/$app/build"
+        cd "/tmp/lunova-apps/$app/build"
+        cmake .. -DCMAKE_INSTALL_PREFIX=/usr || true
+        make -j$(nproc) || true
+        make install || true
+    fi
+done
+
+# Clean up build artifacts from chroot filesystem
+echo "==> Cleaning temporary build files..."
+rm -rf /tmp/lunova-apps
+
+echo "==> Lunova Native Applications installation complete."

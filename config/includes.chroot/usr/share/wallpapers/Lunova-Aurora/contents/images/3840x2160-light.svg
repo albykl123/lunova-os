@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3840 2160" width="100%" height="100%">
+  <defs>
+    <!-- Soft Pearl Canvas -->
+    <radialGradient id="lightBg" cx="50%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="50%" stop-color="#F2F5FD"/>
+      <stop offset="100%" stop-color="#E2E8F7"/>
+    </radialGradient>
+
+    <linearGradient id="lightWave1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#59D9F8" stop-opacity="0.35"/>
+      <stop offset="50%" stop-color="#5478FF" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#9270FF" stop-opacity="0.10"/>
+    </linearGradient>
+
+    <linearGradient id="lightWave2" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#9270FF" stop-opacity="0.25"/>
+      <stop offset="60%" stop-color="#5478FF" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#59D9F8" stop-opacity="0"/>
+    </linearGradient>
+
+    <filter id="lightBlur" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="110"/>
+    </filter>
+  </defs>
+
+  <rect width="3840" height="2160" fill="url(#lightBg)"/>
+
+  <path d="M -200 1200 C 600 600, 1400 1600, 2200 900 C 2800 400, 3400 1100, 4100 800 L 4100 2300 L -200 2300 Z"
+        fill="url(#lightWave2)" filter="url(#lightBlur)"/>
+
+  <path d="M -100 800 C 800 1400, 1600 500, 2500 1100 C 3100 1500, 3600 800, 4000 1200 L 4000 2300 L -100 2300 Z"
+        fill="url(#lightWave1)" filter="url(#lightBlur)"/>
+
+  <g transform="translate(1920, 1080) scale(1.6)">
+    <circle cx="0" cy="0" r="180" fill="none" stroke="#5478FF" stroke-width="2.5" stroke-opacity="0.30" stroke-dasharray="800 200" transform="rotate(-40)"/>
+    <circle cx="0" cy="0" r="240" fill="none" stroke="#9270FF" stroke-width="1.5" stroke-opacity="0.20" stroke-dasharray="1000 400" transform="rotate(25)"/>
+  </g>
+</svg>

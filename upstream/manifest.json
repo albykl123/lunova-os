@@ -1,0 +1,82 @@
+{
+  "project": "Lunova OS",
+  "version": "1.0.0",
+  "codename": "Aurora",
+  "debianBase": "Debian GNU/Linux 13 (Trixie)",
+  "upstreamSources": [
+    {
+      "component": "Linux Kernel",
+      "upstreamUrl": "https://github.com/torvalds/linux",
+      "debianSource": "https://sources.debian.org/src/linux/",
+      "debianPackage": "linux-image-amd64",
+      "version": "6.12.x-trixie",
+      "license": "GPL-2.0"
+    },
+    {
+      "component": "Debian Live-Build",
+      "upstreamUrl": "https://salsa.debian.org/live-team/live-build",
+      "debianSource": "https://sources.debian.org/src/live-build/",
+      "debianPackage": "live-build",
+      "version": "20240810",
+      "license": "GPL-3.0+"
+    },
+    {
+      "component": "KDE Plasma Desktop",
+      "upstreamUrl": "https://github.com/KDE/plasma-desktop",
+      "inventUrl": "https://invent.kde.org/plasma/plasma-desktop",
+      "debianPackage": "plasma-desktop",
+      "version": "6.2.x",
+      "license": "GPL-2.0+"
+    },
+    {
+      "component": "KDE Plasma Workspace",
+      "upstreamUrl": "https://invent.kde.org/plasma/plasma-workspace",
+      "debianPackage": "plasma-workspace",
+      "version": "6.2.x",
+      "license": "GPL-2.0+"
+    },
+    {
+      "component": "KWin Window Manager",
+      "upstreamUrl": "https://github.com/KDE/kwin",
+      "inventUrl": "https://invent.kde.org/plasma/kwin",
+      "debianPackage": "kwin-wayland",
+      "version": "6.2.x",
+      "license": "GPL-2.0+"
+    },
+    {
+      "component": "Breeze Theme & Decoration",
+      "upstreamUrl": "https://invent.kde.org/plasma/breeze",
+      "debianPackage": "breeze",
+      "version": "6.2.x",
+      "license": "GPL-2.0+ / LGPL-2.1+"
+    },
+    {
+      "component": "SDDM Display Manager",
+      "upstreamUrl": "https://github.com/sddm/sddm",
+      "debianPackage": "sddm",
+      "version": "0.20.x",
+      "license": "GPL-2.0+"
+    },
+    {
+      "component": "Calamares Installer",
+      "upstreamUrl": "https://github.com/calamares/calamares",
+      "debianPackage": "calamares",
+      "version": "3.3.14-1",
+      "license": "GPL-3.0+"
+    },
+    {
+      "component": "GRUB Bootloader",
+      "upstreamUrl": "https://git.savannah.gnu.org/git/grub.git",
+      "debianPackage": "grub-efi-amd64",
+      "version": "2.12",
+      "license": "GPL-3.0+"
+    },
+    {
+      "component": "PipeWire Audio",
+      "upstreamUrl": "https://gitlab.freedesktop.org/pipewire/pipewire",
+      "debianPackage": "pipewire",
+      "version": "1.2.x",
+      "license": "MIT / LGPL-2.1+"
+    }
+  ]
+}

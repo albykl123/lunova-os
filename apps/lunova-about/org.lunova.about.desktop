@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Lunova About
+GenericName=System Specifications
+Comment=View system and hardware specifications for Lunova OS
+Exec=lunova-about
+Icon=lunova-icon
+Terminal=false
+Categories=Qt;System;Utility;
+StartupNotify=true

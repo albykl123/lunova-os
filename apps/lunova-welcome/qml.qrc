@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/Main.qml</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file alias="lunova-icon.svg">../../branding/logos/lunova-icon.svg</file>
+        <file alias="lunova-logo.svg">../../branding/logos/lunova-logo-full.svg</file>
+    </qresource>
+</RCC>

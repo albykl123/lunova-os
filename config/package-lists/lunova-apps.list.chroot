@@ -1,0 +1,38 @@
+# ==============================================================================
+# Lunova OS 1.0 Aurora - Standard Desktop Applications
+# ==============================================================================
+
+# Core Applications
+dolphin
+konsole
+kate
+kcalc
+ark
+spectacle
+gwenview
+okular
+
+# Internet & Web
+firefox-esr
+
+# Media Playback
+vlc
+
+# System Configuration & Package Management
+systemsettings
+plasma-discover
+plasma-discover-backend-flatpak
+plasma-systemmonitor
+flatpak
+
+# Printing & Scanning Support
+cups
+cups-client
+system-config-printer
+print-manager
+simple-scan
+
+# Security and Credentials
+kwalletmanager
+libsecret-1-0
+libsecret-tools

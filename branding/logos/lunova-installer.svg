@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="100%" height="100%">
+  <defs>
+    <linearGradient id="instGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#59D9F8"/>
+      <stop offset="50%" stop-color="#5478FF"/>
+      <stop offset="100%" stop-color="#9270FF"/>
+    </linearGradient>
+  </defs>
+  <!-- Mini Icon -->
+  <g transform="translate(10, 10) scale(0.3)">
+    <circle cx="100" cy="100" r="90" fill="none" stroke="url(#instGrad)" stroke-width="12"/>
+    <path d="M 90 35 C 130 35 160 65 160 105 C 160 135 140 160 115 170 C 140 155 148 125 135 100 C 124 80 100 70 80 75 C 84 55 86 35 90 35 Z" fill="url(#instGrad)"/>
+    <path d="M 65 45 L 65 125 C 65 140 75 150 90 150 L 140 150 C 145 150 148 155 145 160 L 85 160 C 60 160 50 150 50 125 L 50 50 Z" fill="#59D9F8"/>
+  </g>
+  <!-- Text -->
+  <text x="80" y="38" font-family="'Inter', system-ui, sans-serif" font-size="20" font-weight="700" fill="#F5F7FF">Install Lunova OS</text>
+  <text x="80" y="58" font-family="'Inter', system-ui, sans-serif" font-size="12" font-weight="400" fill="#A7B2C9">Version 1.0.0 Aurora</text>
+</svg>

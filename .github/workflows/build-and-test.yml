@@ -1,0 +1,120 @@
+name: Build and Test Lunova OS 1.0 Aurora
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  lint-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Tree
+        uses: actions/checkout@v4
+
+      - name: Fix Line Endings (CRLF to LF)
+        run: |
+          sudo apt-get update && sudo apt-get install -y dos2unix
+          find . -name "*.sh" -exec dos2unix {} +
+          find . -name "*.hook.chroot" -exec dos2unix {} +
+
+      - name: Install Linting Tools
+        run: |
+          sudo apt-get install -y shellcheck desktop-file-utils jq
+
+      - name: Lint Shell Scripts
+        run: |
+          shellcheck scripts/*.sh tests/*.sh config/hooks/normal/*.hook.chroot
+
+      - name: Validate Desktop Entry Files
+        run: |
+          find . -name "*.desktop" -exec desktop-file-validate {} +
+
+      - name: Run Test Suites
+        run: |
+          chmod +x tests/*.sh scripts/*.sh config/hooks/normal/*.hook.chroot
+          ./tests/test_config.sh
+          ./tests/test_branding.sh
+          ./tests/test_scripts.sh
+
+  compile-native-apps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Tree
+        uses: actions/checkout@v4
+
+      - name: Install Qt & CMake Toolchains
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake \
+            qt6-base-dev qt6-declarative-dev qt6-tools-dev || \
+            sudo apt-get install -y qtbase5-dev qtdeclarative5-dev qttools5-dev
+
+      - name: Compile Lunova Welcome
+        run: |
+          mkdir -p apps/lunova-welcome/build && cd apps/lunova-welcome/build
+          cmake .. && make
+
+      - name: Compile Lunova About
+        run: |
+          mkdir -p apps/lunova-about/build && cd apps/lunova-about/build
+          cmake .. && make
+
+      - name: Compile Lunova Control Center
+        run: |
+          mkdir -p apps/lunova-control-center/build && cd apps/lunova-control-center/build
+          cmake .. && make
+
+      - name: Compile Lunova Assistant
+        run: |
+          mkdir -p apps/lunova-assistant/build && cd apps/lunova-assistant/build
+          cmake .. && make
+
+      - name: Compile Lunova Update
+        run: |
+          mkdir -p apps/lunova-update/build && cd apps/lunova-update/build
+          cmake .. && make
+
+  build-live-iso:
+    runs-on: ubuntu-latest
+    needs: [lint-and-validate, compile-native-apps]
+    steps:
+      - name: Checkout Source Tree
+        uses: actions/checkout@v4
+
+      - name: Setup Live-Build Environment
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y live-build debootstrap xorriso isolinux syslinux-efi \
+            grub-pc-bin grub-efi-amd64-bin mtools dosfstools squashfs-tools dos2unix
+
+      - name: Normalize Line Endings
+        run: |
+          find . -name "*.sh" -exec dos2unix {} +
+          find . -name "*.hook.chroot" -exec dos2unix {} +
+          sudo chmod +x scripts/*.sh tests/*.sh config/hooks/normal/*.hook.chroot
+
+      - name: Configure Live-Build
+        run: |
+          sudo ./scripts/configure.sh
+
+      - name: Build Lunova OS Live ISO
+        run: |
+          sudo ./scripts/build-iso.sh
+
+      - name: Verify Checksums
+        run: |
+          cd dist
+          sha256sum -c SHA256SUMS
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lunova-OS-1.0.0-Aurora-Release
+          path: |
+            dist/Lunova-OS-1.0.0-Aurora-amd64.iso
+            dist/SHA256SUMS
+            dist/build-manifest.json
+            dist/build-report.md

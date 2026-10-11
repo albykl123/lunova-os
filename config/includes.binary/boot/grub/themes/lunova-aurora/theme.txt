@@ -1,0 +1,42 @@
+# ==============================================================================
+# Lunova OS 1.0 Aurora - GRUB Bootloader Theme
+# ==============================================================================
+
+title-text: "LUNOVA OS 1.0 — AURORA"
+title-font: "DejaVu Sans Bold 16"
+title-color: "#59D9F8"
+message-font: "DejaVu Sans 12"
+message-color: "#A7B2C9"
+desktop-image: "background.png"
+desktop-color: "#080D1C"
+
+# Boot Menu
++ boot_menu {
+    left = 30%
+    top = 35%
+    width = 40%
+    height = 40%
+    item_font = "DejaVu Sans 14"
+    item_color = "#A7B2C9"
+    selected_item_color = "#F5F7FF"
+    item_height = 36
+    item_padding = 8
+    item_spacing = 6
+    selected_item_pixmap_style = "select_*.png"
+}
+
+# Progress Bar / Timeout
++ progress_bar {
+    id = "__timeout__"
+    left = 35%
+    top = 80%
+    width = 30%
+    height = 12
+    show_text = true
+    text_color = "#59D9F8"
+    font = "DejaVu Sans 10"
+    text = "@TIMEOUT_NOTIFICATION_SHORT@"
+    bg_color = "#10182D"
+    fg_color = "#5478FF"
+    border_color = "#59D9F8"
+}

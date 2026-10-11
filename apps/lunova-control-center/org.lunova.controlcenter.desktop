@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Lunova Control Center
+GenericName=System Preferences Dashboard
+Comment=Unified system settings and quick preferences for Lunova OS
+Exec=lunova-control-center
+Icon=preferences-system
+Terminal=false
+Categories=Qt;System;Settings;
+StartupNotify=true

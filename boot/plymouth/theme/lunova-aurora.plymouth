@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Lunova Aurora
+Description=Aurora Glass Plymouth Boot Splash for Lunova OS
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/lunova-aurora
+ScriptFile=/usr/share/plymouth/themes/lunova-aurora/lunova-aurora.script

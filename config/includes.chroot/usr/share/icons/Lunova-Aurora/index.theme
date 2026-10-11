@@ -1,0 +1,26 @@
+[Icon Theme]
+Name=Lunova Aurora
+Comment=Official Aurora Glass Icon Theme for Lunova OS
+Inherits=breeze-dark,breeze,hicolor
+Directories=apps/scalable,places/scalable,status/scalable
+
+[apps/scalable]
+Size=48
+Type=Scalable
+MinSize=16
+MaxSize=512
+Context=Applications
+
+[places/scalable]
+Size=48
+Type=Scalable
+MinSize=16
+MaxSize=512
+Context=Places
+
+[status/scalable]
+Size=24
+Type=Scalable
+MinSize=16
+MaxSize=64
+Context=Status

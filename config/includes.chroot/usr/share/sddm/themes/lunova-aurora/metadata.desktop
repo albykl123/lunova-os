@@ -1,0 +1,15 @@
+[SddmGreeterTheme]
+Name=Lunova Aurora
+Description=Aurora Glass SDDM Login Theme for Lunova OS
+Author=Lunova OS Engineering Team
+Copyright=(c) 2026 Lunova OS Project
+License=GPL-3.0
+Type=sddm-theme
+Version=1.0.0
+Website=https://github.com/lunova-os/lunova-os
+Screenshot=screenshot.png
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Theme-Id=lunova-aurora
+Theme-API=2.0

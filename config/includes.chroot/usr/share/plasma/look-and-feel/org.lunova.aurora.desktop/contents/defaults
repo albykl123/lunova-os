@@ -1,0 +1,37 @@
+[kdeglobals][General]
+ColorScheme=LunovaAuroraDark
+Name=Lunova Aurora Dark
+fixed=JetBrains Mono,10,-1,5,50,0,0,0,0,0
+font=Inter,10,-1,5,50,0,0,0,0,0
+menuFont=Inter,10,-1,5,50,0,0,0,0,0
+smallestReadableFont=Inter,8,-1,5,50,0,0,0,0,0
+toolBarFont=Inter,10,-1,5,50,0,0,0,0,0
+windowTitleFont=Inter,10,-1,5,75,0,0,0,0,0
+
+[kdeglobals][KDE]
+LookAndFeelPackage=org.lunova.aurora.desktop
+ShowDeleteCommand=true
+widgetStyle=Breeze
+
+[kdeglobals][Icons]
+Theme=breeze-dark
+
+[kcminputrc][Mouse]
+cursorTheme=breeze_cursors
+cursorSize=24
+
+[kwinrc][org.kde.kdecoration2]
+ButtonsOnLeft=
+ButtonsOnRight=IAX
+BorderSize=None
+BorderSizeAuto=false
+theme=Breeze
+
+[kwinrc][Windows]
+ActiveMouseScreen=true
+DelayFocus=false
+FocusPolicy=ClickToFocus
+SnapThreshold=10
+
+[plasmarc][Theme]
+name=default

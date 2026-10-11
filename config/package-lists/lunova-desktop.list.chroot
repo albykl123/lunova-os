@@ -1,0 +1,65 @@
+# ==============================================================================
+# Lunova OS 1.0 Aurora - KDE Plasma 6 Desktop & Display Stack (Debian 13 Trixie)
+# ==============================================================================
+
+# X11 & Wayland Graphics Foundations
+xorg
+xserver-xorg-core
+xwayland
+wayland-protocols
+
+# KDE Plasma Desktop Environment (Plasma 6 Ecosystem in Trixie)
+kde-plasma-desktop
+plasma-workspace
+plasma-workspace-wayland
+plasma-desktop
+kwin-wayland
+kwin-x11
+kwin-addons
+
+# Plasma Integration Applets and Daemons
+plasma-nm
+plasma-pa
+plasma-vault
+bluedevil
+powerdevil
+kscreen
+polkit-kde-agent-1
+ksshaskpass
+
+# Theming, Styling and Icons
+breeze
+breeze-gtk-theme
+breeze-icon-theme
+kde-style-breeze
+kdegraphics-thumbnailers
+ffmpegthumbs
+
+# Display Manager (SDDM)
+sddm
+sddm-theme-breeze
+
+# Boot Splash (Plymouth)
+plymouth
+plymouth-themes
+plymouth-x11
+
+# Qt 6 & QML Frameworks for Aurora Glass & Native Lunova Apps
+qt6-base-dev
+qt6-declarative-dev
+qt6-tools-dev
+qml6-module-qtquick
+qml6-module-qtquick-controls
+qml6-module-qtquick-layouts
+qml6-module-qtquick-window
+qml6-module-qtquick-templates
+qml6-module-qtcore
+qml6-module-qtgui
+
+# Typography (Open-source modern typefaces)
+fonts-inter
+fonts-jetbrains-mono
+fonts-noto-core
+fonts-noto-color-emoji
+fonts-font-awesome
+fontconfig

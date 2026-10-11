@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Lunova Update
+GenericName=System Update Manager
+Comment=Check and apply official Debian updates for Lunova OS
+Exec=lunova-update
+Icon=system-software-update
+Terminal=false
+Categories=Qt;System;
+StartupNotify=true

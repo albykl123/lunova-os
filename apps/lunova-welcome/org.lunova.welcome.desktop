@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Lunova Welcome
+GenericName=System Onboarding
+Comment=Welcome to Lunova OS 1.0 Aurora
+Exec=lunova-welcome
+Icon=lunova-icon
+Terminal=false
+Categories=Qt;System;Utility;
+StartupNotify=true

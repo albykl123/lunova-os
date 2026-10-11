@@ -1,0 +1,21 @@
+# ==============================================================================
+# Lunova OS 1.0 Aurora - Hardware Drivers & Non-free Firmware
+# ==============================================================================
+
+# Hardware Acceleration & Graphics Drivers
+mesa-vulkan-drivers
+mesa-va-drivers
+mesa-vdpau-drivers
+xserver-xorg-video-all
+libgl1-mesa-dri
+
+# Core Wireless & Bluetooth Firmware
+firmware-linux
+firmware-linux-free
+firmware-linux-nonfree
+firmware-misc-nonfree
+firmware-iwlwifi
+firmware-realtek
+firmware-atheros
+firmware-intel-sound
+firmware-sof-signed

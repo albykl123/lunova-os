@@ -1,0 +1,46 @@
+The Debian Free Software Guidelines (DFSG)
+
+The Debian Free Software Guidelines (DFSG) are the guidelines by which the Debian
+project determines whether software is free software according to Debian's standards.
+
+1. Free Redistribution
+The license of a Debian component may not restrict any party from selling or giving away
+the software as a component of an aggregate software distribution containing programs
+from several different sources. The license may not require a royalty or other fee for
+such sale.
+
+2. Source Code
+The program must include source code, and must allow distribution in source code as
+well as in compiled form.
+
+3. Derived Works
+The license must allow modifications and derived works, and must allow them to be
+distributed under the same terms as the license of the original software.
+
+4. Integrity of The Author's Source Code
+The license may restrict source-code from being distributed in modified form only
+if the license allows the distribution of "patch files" with the source code for the
+purpose of modifying the program at build time.
+
+5. No Discrimination Against Persons or Groups
+The license must not discriminate against any person or group of persons.
+
+6. No Discrimination Against Fields of Endeavor
+The license must not restrict anyone from making use of the program in a specific
+field of endeavor.
+
+7. Distribution of License
+The rights attached to the program must apply to all to whom the program is
+redistributed without the need for execution of an additional license by those parties.
+
+8. License Must Not Be Specific to Debian
+The rights attached to the program must not depend on the program's being part of
+a Debian system.
+
+9. License Must Not Contaminate Other Software
+The license must not place restrictions on other software that is distributed along
+with the licensed software.
+
+10. Example Licenses
+The "GPL", "BSD", and "Artistic" licenses are examples of licenses that we consider
+"free".

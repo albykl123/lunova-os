@@ -1,0 +1,21 @@
+﻿#!/bin/sh
+set -e
+
+echo "==> Configuring Lunova Live User & Default Settings..."
+
+# Enable NetworkManager service
+systemctl enable NetworkManager.service || true
+
+# Enable SDDM display manager
+systemctl enable sddm.service || true
+
+# Enable PipeWire user services
+systemctl --global enable pipewire.service || true
+systemctl --global enable pipewire-pulse.service || true
+systemctl --global enable wireplumber.service || true
+
+# Pre-populate live user skel
+mkdir -p /etc/skel/.config/autostart
+cp /usr/share/applications/org.lunova.welcome.desktop /etc/skel/.config/autostart/ 2>/dev/null || true
+
+echo "==> User setup hook complete."

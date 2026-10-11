@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Lunova Assistant
+GenericName=AI Desktop Assistant
+Comment=Optional desktop AI assistant with local privacy and command authorization
+Exec=lunova-assistant
+Icon=lunova-icon
+Terminal=false
+Categories=Qt;System;Utility;
+StartupNotify=true

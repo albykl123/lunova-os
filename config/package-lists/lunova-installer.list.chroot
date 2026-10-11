@@ -1,0 +1,14 @@
+# ==============================================================================
+# Lunova OS 1.0 Aurora - Calamares System Installer
+# ==============================================================================
+
+calamares
+calamares-settings-debian
+kpmcore
+partitionmanager
+squashfs-tools
+rsync
+efibootmgr
+grub-efi-amd64-bin
+grub-pc-bin
+os-prober

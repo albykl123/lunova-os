@@ -1,0 +1,37 @@
+# Build artifacts
+dist/*.iso
+dist/*.iso.zsync
+dist/*.raw
+dist/*.qcow2
+cache/
+chroot/
+binary/
+.build/
+
+# Live-build temporary files
+auto/config
+auto/build
+auto/clean
+
+# Compiled binaries and object files
+*.o
+*.obj
+*.so
+*.a
+*.dll
+*.exe
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile.cmake
+
+# Editor and OS junk
+*~
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+*.log

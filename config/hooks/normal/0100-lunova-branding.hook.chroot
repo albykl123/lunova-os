@@ -1,0 +1,31 @@
+﻿#!/bin/sh
+set -e
+
+echo "==> Configuring Lunova OS Aurora Branding..."
+
+# Set default Plymouth theme
+if [ -x /usr/sbin/plymouth-set-default-theme ]; then
+    /usr/sbin/plymouth-set-default-theme lunova-aurora || true
+fi
+
+# Update initramfs with new splash and drivers for all installed kernels
+if [ -x /usr/sbin/update-initramfs ]; then
+    /usr/sbin/update-initramfs -u -k all || true
+fi
+
+# Update icon cache
+if [ -x /usr/bin/gtk-update-icon-cache ]; then
+    /usr/bin/gtk-update-icon-cache -f -t /usr/share/icons/Lunova-Aurora || true
+fi
+
+# Update font cache
+if [ -x /usr/bin/fc-cache ]; then
+    /usr/bin/fc-cache -f -v || true
+fi
+
+# Set SDDM default theme
+if [ -f /etc/sddm.conf ]; then
+    sed -i 's/^Current=.*/Current=lunova-aurora/' /etc/sddm.conf || true
+fi
+
+echo "==> Lunova OS Aurora Branding configuration complete."

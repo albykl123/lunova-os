@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#10182D"/>
+      <stop offset="100%" stop-color="#080D1C"/>
+    </radialGradient>
+
+    <!-- Aurora Glow Gradient -->
+    <linearGradient id="auroraGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#59D9F8"/>
+      <stop offset="50%" stop-color="#5478FF"/>
+      <stop offset="100%" stop-color="#9270FF"/>
+    </linearGradient>
+
+    <!-- Ring Gradient -->
+    <linearGradient id="ringGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#59D9F8" stop-opacity="0.9"/>
+      <stop offset="50%" stop-color="#5478FF" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#9270FF" stop-opacity="0.2"/>
+    </linearGradient>
+
+    <!-- Soft Glow Filter -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="512" height="512" rx="104" fill="url(#bgGrad)"/>
+
+  <!-- Orbital Ring (Aurora Halo) -->
+  <circle cx="256" cy="256" r="168" fill="none" stroke="url(#ringGrad)" stroke-width="14" stroke-dasharray="720 180" transform="rotate(-35 256 256)" filter="url(#glow)"/>
+
+  <!-- Geometric Lunova Crescent & Flowing 'L' Monogram -->
+  <g filter="url(#glow)">
+    <!-- Crescent Moon Curve -->
+    <path d="M 230 110
+             C 320 110 392 182 392 272
+             C 392 344 346 405 282 426
+             C 340 395 362 320 330 260
+             C 305 212 250 188 200 200
+             C 210 148 218 110 230 110 Z"
+          fill="url(#auroraGlow)"/>
+
+    <!-- Flowing 'L' Horizon Wave -->
+    <path d="M 160 140
+             C 160 140 170 280 170 320
+             C 170 350 190 370 220 370
+             L 340 370
+             C 355 370 365 385 355 400
+             C 345 410 330 410 315 410
+             L 210 410
+             C 160 410 130 380 130 330
+             L 130 150
+             C 130 135 145 125 160 140 Z"
+          fill="#59D9F8"/>
+  </g>
+
+  <!-- Central Stellar Core -->
+  <circle cx="256" cy="256" r="10" fill="#F5F7FF" filter="url(#glow)"/>
+</svg>

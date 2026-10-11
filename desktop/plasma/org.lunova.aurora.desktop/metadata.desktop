@@ -1,0 +1,17 @@
+[Desktop Entry]
+Comment=Lunova OS Aurora Glass Global Plasma Theme
+Comment[en_US]=Lunova OS Aurora Glass Global Plasma Theme
+Encoding=UTF-8
+Keywords=Desktop;Workspace;Appearance;Look and Feel;Aurora;Lunova;
+Name=Lunova Aurora
+Name[en_US]=Lunova Aurora
+Type=Service
+
+X-KDE-PluginInfo-Author=Lunova OS Engineering Team
+X-KDE-PluginInfo-Category=Plasma Look and Feel
+X-KDE-PluginInfo-Email=dev@lunova-os.org
+X-KDE-PluginInfo-License=GPL-3.0+
+X-KDE-PluginInfo-Name=org.lunova.aurora.desktop
+X-KDE-PluginInfo-Version=1.0.0
+X-KDE-PluginInfo-Website=https://github.com/lunova-os/lunova-os
+X-Plasma-MainScript=defaults

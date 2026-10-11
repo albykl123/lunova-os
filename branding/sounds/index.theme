@@ -1,0 +1,8 @@
+[Sound Theme]
+Name=Lunova Aurora
+Comment=Official Aurora Glass Sound Theme for Lunova OS
+Inherits=ocean,freedesktop
+Directories=stereo
+
+[stereo]
+OutputProfile=stereo

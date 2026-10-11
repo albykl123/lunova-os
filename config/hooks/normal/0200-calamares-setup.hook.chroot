@@ -1,0 +1,17 @@
+﻿#!/bin/sh
+set -e
+
+echo "==> Configuring Calamares Installer..."
+
+# Ensure Calamares launcher permissions
+chmod +x /usr/share/applications/install-lunova.desktop || true
+if [ -d /etc/skel/Desktop ]; then
+    chmod +x /etc/skel/Desktop/install-lunova.desktop || true
+fi
+
+# Ensure passwordless sudo for live session installer execution
+mkdir -p /etc/sudoers.d
+echo "live ALL=(ALL) NOPASSWD: /usr/bin/calamares" > /etc/sudoers.d/99-calamares
+chmod 0440 /etc/sudoers.d/99-calamares
+
+echo "==> Calamares Installer configuration complete."

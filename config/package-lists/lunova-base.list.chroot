@@ -1,0 +1,79 @@
+# ==============================================================================
+# Lunova OS 1.0 Aurora - Base Operating System Package List
+# ==============================================================================
+
+# Linux Kernel and Core System
+linux-image-amd64
+linux-headers-amd64
+systemd
+systemd-sysv
+systemd-timesyncd
+dbus
+dbus-user-session
+
+# Live Environment Support
+live-boot
+live-config
+live-config-systemd
+live-tools
+user-setup
+sudo
+
+# Filesystem and Storage
+e2fsprogs
+btrfs-progs
+dosfstools
+ntfs-3g
+xfsprogs
+parted
+fdisk
+
+# Networking and Connectivity
+network-manager
+iproute2
+iputils-ping
+wireless-tools
+wpasupplicant
+rfkill
+curl
+wget
+ca-certificates
+gnupg
+
+# Audio and Multimedia Subsystem (Modern PipeWire + WirePlumber)
+pipewire
+pipewire-bin
+pipewire-pulse
+pipewire-alsa
+wireplumber
+gstreamer1.0-pipewire
+libspa-0.2-bluetooth
+alsa-utils
+
+# Bluetooth Support
+bluez
+bluez-tools
+
+# Power Management & Hardware Monitoring
+upower
+acpid
+lm-sensors
+pciutils
+usbutils
+
+# Core CLI Utilities
+bash
+bash-completion
+coreutils
+grep
+sed
+gawk
+tar
+gzip
+bzip2
+xz-utils
+zstd
+less
+nano
+htop
+neofetch
