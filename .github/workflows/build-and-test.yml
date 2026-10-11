@@ -107,8 +107,9 @@ jobs:
 
       - name: Build Lunova OS Live ISO via Docker (Debian 13 Trixie)
         run: |
+          chmod +x scripts/*.sh tests/*.sh config/hooks/normal/*.hook.chroot || true
           chmod +x config/includes.chroot/usr/bin/lunova-* || true
-          docker run --privileged --rm -v "$GITHUB_WORKSPACE":/build -w /build debian:trixie /build/scripts/build-in-docker.sh
+          docker run --privileged --rm -v "$GITHUB_WORKSPACE":/build -w /build debian:trixie bash /build/scripts/build-in-docker.sh
 
       - name: Verify Checksums
         run: |

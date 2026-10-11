@@ -39,7 +39,7 @@ mkdir -p "$DIST_DIR"
 cd "$ROOT_DIR"
 
 echo "[*] Step 1: Configuring live-build parameters..."
-./scripts/configure.sh
+bash ./scripts/configure.sh
 
 echo "[*] Step 2: Executing live-build (bootstrap -> chroot -> binary)..."
 START_TIME=$(date +%s)

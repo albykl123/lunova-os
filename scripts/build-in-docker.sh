@@ -38,4 +38,4 @@ find . -name "*.hook.chroot" -exec dos2unix {} +
 chmod +x scripts/*.sh tests/*.sh config/hooks/normal/*.hook.chroot
 
 echo "[*] Launching Master ISO Build..."
-./scripts/build-iso.sh
+bash ./scripts/build-iso.sh
