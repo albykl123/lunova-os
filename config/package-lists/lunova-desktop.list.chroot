@@ -11,7 +11,6 @@ wayland-protocols
 # KDE Plasma Desktop Environment (Plasma 6 Ecosystem in Trixie)
 kde-plasma-desktop
 plasma-workspace
-plasma-workspace-wayland
 plasma-desktop
 kwin-wayland
 kwin-x11
@@ -54,7 +53,6 @@ qml6-module-qtquick-layouts
 qml6-module-qtquick-window
 qml6-module-qtquick-templates
 qml6-module-qtcore
-qml6-module-qtgui
 
 # Typography (Open-source modern typefaces)
 fonts-inter
