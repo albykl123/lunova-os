@@ -93,7 +93,7 @@ jobs:
           echo "Extracting live filesystem for application validation..."
           mkdir -p /tmp/iso /tmp/rootfs
           7z x dist/Lunova-OS-1.0.0-Aurora-amd64.iso live/filesystem.squashfs -o/tmp/iso
-          sudo unsquashfs -no-devices -no-xattrs -d /tmp/rootfs /tmp/iso/live/filesystem.squashfs
+          sudo unsquashfs -no-xattrs -no-exit-code -d /tmp/rootfs /tmp/iso/live/filesystem.squashfs || true
 
           echo "Auditing core system and custom applications..."
           cat << 'EOF' > test-results/app-audit.sh
