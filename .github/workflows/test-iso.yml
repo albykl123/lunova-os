@@ -93,7 +93,7 @@ jobs:
           echo "Extracting live filesystem for application validation..."
           mkdir -p /tmp/iso /tmp/rootfs
           7z x dist/Lunova-OS-1.0.0-Aurora-amd64.iso live/filesystem.squashfs -o/tmp/iso
-          unsquashfs -d /tmp/rootfs /tmp/iso/live/filesystem.squashfs
+          sudo unsquashfs -no-devices -no-xattrs -d /tmp/rootfs /tmp/iso/live/filesystem.squashfs
 
           echo "Auditing core system and custom applications..."
           cat << 'EOF' > test-results/app-audit.sh
@@ -107,7 +107,7 @@ jobs:
             DESKTOP="$3"
             echo "--- Testing: $NAME ---"
             if [ -f "$ROOT$BIN" ]; then
-              echo "Binary found: $BIN ($(file -b "$ROOT$BIN"))"
+              echo "Binary found: $BIN"
               ls -la "$ROOT$BIN"
             else
               echo "Binary MISSING: $BIN"
