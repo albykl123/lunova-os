@@ -1,4 +1,4 @@
-name: Build and Test Lunova OS 1.0 Aurora
+name: Build and Test Lunova OS 1.0.1 Aurora
 
 on:
   push:
@@ -119,9 +119,9 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Lunova-OS-1.0.0-Aurora-Release
+          name: Lunova-OS-1.0.1-Aurora-Release
           path: |
-            dist/Lunova-OS-1.0.0-Aurora-amd64.iso
+            dist/Lunova-OS-1.0.1-Aurora-amd64.iso
             dist/SHA256SUMS
             dist/build-manifest.json
             dist/build-report.md

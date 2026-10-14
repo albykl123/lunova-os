@@ -7,12 +7,12 @@ This document defines the release lifecycle, distribution artifacts, and release
 ## 1. Official Release Metadata
 
 - **Product Name:** Lunova OS
-- **Version:** 1.0.0
+- **Version:** 1.0.1
 - **Codename:** Aurora
 - **Edition:** Lunova OS Desktop
 - **Architecture:** x86-64 / amd64
 - **Base:** Debian GNU/Linux 13 ("Trixie")
-- **Target ISO File:** `Lunova-OS-1.0.0-Aurora-amd64.iso`
+- **Target ISO File:** `Lunova-OS-1.0.1-Aurora-amd64.iso`
 
 ---
 
@@ -22,7 +22,7 @@ Every completed build generates the following files in `dist/`:
 
 | Artifact | Purpose |
 |---|---|
-| `Lunova-OS-1.0.0-Aurora-amd64.iso` | Bootable hybrid ISO image for USB and DVD media |
+| `Lunova-OS-1.0.1-Aurora-amd64.iso` | Bootable hybrid ISO image for USB and DVD media |
 | `SHA256SUMS` | Cryptographic SHA-256 checksums file |
 | `build-manifest.json` | Detailed JSON machine-readable build metadata |
 | `build-report.md` | Human-readable build report and package inventory |

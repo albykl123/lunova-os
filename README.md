@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-1.0.0--Aurora-5478FF?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.0.1--Aurora-5478FF?style=flat-square" alt="Version">
   <img src="https://img.shields.io/badge/Base-Debian%2013%20Trixie-D70A53?style=flat-square" alt="Debian">
   <img src="https://img.shields.io/badge/Desktop-KDE%20Plasma%206-1D99F3?style=flat-square" alt="KDE Plasma">
   <img src="https://img.shields.io/badge/Architecture-x86--64-59D9F8?style=flat-square" alt="Architecture">
@@ -26,7 +26,7 @@
 |---|---|
 | **Product Name** | Lunova OS |
 | **Edition** | Lunova OS Desktop |
-| **Version** | 1.0.0 |
+| **Version** | 1.0.1 |
 | **Codename** | Aurora |
 | **Tagline** | *Beyond the Desktop.* |
 | **Architecture** | x86-64 / amd64 |
@@ -82,7 +82,7 @@ Lunova OS ships with five dedicated native applications written in C++ and Qt/QM
 lunova-os/
 ├── README.md                      # Project documentation and introduction
 ├── Makefile                       # Master automation (setup, configure, build, test, release)
-├── VERSION                        # Current OS version (1.0.0)
+├── VERSION                        # Current OS version (1.0.1)
 ├── CHANGELOG.md                   # Detailed change history
 ├── .gitignore                     # Git build artifacts ignore list
 ├── LICENSES/                      # Open-source licenses (GPLv3, LGPLv3, MIT, Debian DFSG)

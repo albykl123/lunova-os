@@ -1,6 +1,6 @@
 # Building Lunova OS 1.0 Aurora
 
-This guide provides complete, reproducible instructions for building the bootable Lunova OS live hybrid ISO image (`Lunova-OS-1.0.0-Aurora-amd64.iso`).
+This guide provides complete, reproducible instructions for building the bootable Lunova OS live hybrid ISO image (`Lunova-OS-1.0.1-Aurora-amd64.iso`).
 
 ---
 
@@ -40,7 +40,7 @@ sudo make build
 ```
 
 The resulting ISO and cryptographic checksums will be placed in `dist/`:
-- `dist/Lunova-OS-1.0.0-Aurora-amd64.iso`
+- `dist/Lunova-OS-1.0.1-Aurora-amd64.iso`
 - `dist/SHA256SUMS`
 - `dist/build-manifest.json`
 - `dist/build-report.md`

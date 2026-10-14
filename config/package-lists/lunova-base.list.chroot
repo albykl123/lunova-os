@@ -27,6 +27,7 @@ ntfs-3g
 xfsprogs
 parted
 fdisk
+udisks2
 
 # Networking and Connectivity
 network-manager
@@ -56,6 +57,8 @@ bluez-tools
 
 # Power Management & Hardware Monitoring
 upower
+power-profiles-daemon
+brightnessctl
 acpid
 lm-sensors
 pciutils

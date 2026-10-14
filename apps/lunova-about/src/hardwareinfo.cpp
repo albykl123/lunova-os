@@ -14,7 +14,7 @@ HardwareInfo::HardwareInfo(QObject *parent)
 
 void HardwareInfo::probeSystem()
 {
-    m_osVersion = "Lunova OS 1.0.0 Aurora";
+    m_osVersion = "Lunova OS 1.0.1 Aurora";
     m_debianBase = "Debian GNU/Linux 13 (Trixie)";
     m_licenseNotice = "Lunova OS components are licensed under GPLv3, LGPLv3, and MIT. Based on Debian GNU/Linux.";
 
@@ -81,24 +81,32 @@ void HardwareInfo::probeSystem()
         if (!out.isEmpty()) {
             m_plasmaVersion = out.replace("plasmashell ", "KDE Plasma ");
         } else {
-            m_plasmaVersion = "KDE Plasma 5.27 LTS";
+            m_plasmaVersion = "KDE Plasma 6.3+";
         }
     } else {
-        m_plasmaVersion = "KDE Plasma 5.27 LTS";
+        m_plasmaVersion = "KDE Plasma 6.3+";
     }
 
-    // 6. GPU Probe via lspci
+    // 6. GPU Probe via lspci (structured process execution without shell)
+    m_gpuRenderer = "Mesa / Generic KMS Acceleration";
     QProcess lspciProc;
-    lspciProc.start("/bin/sh", QStringList() << "-c" << "lspci | grep -iE 'vga|3d|display' | head -n 1 | cut -d ':' -f3");
+    lspciProc.start("lspci", QStringList());
     if (lspciProc.waitForFinished(1000)) {
-        QString gpuOut = QString::fromUtf8(lspciProc.readAllStandardOutput()).trimmed();
-        if (!gpuOut.isEmpty()) {
-            m_gpuRenderer = gpuOut;
-        } else {
-            m_gpuRenderer = "Mesa / Generic KMS Acceleration";
+        QString gpuOut = QString::fromUtf8(lspciProc.readAllStandardOutput());
+        const QStringList lines = gpuOut.split('\n');
+        for (const QString &line : lines) {
+            if (line.contains("vga", Qt::CaseInsensitive) ||
+                line.contains("3d", Qt::CaseInsensitive) ||
+                line.contains("display", Qt::CaseInsensitive)) {
+                QStringList parts = line.split(':');
+                if (parts.size() >= 3) {
+                    m_gpuRenderer = parts[2].trimmed();
+                } else {
+                    m_gpuRenderer = line.trimmed();
+                }
+                break;
+            }
         }
-    } else {
-        m_gpuRenderer = "Mesa / Generic KMS Acceleration";
     }
 }
 

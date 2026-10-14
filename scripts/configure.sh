@@ -47,9 +47,9 @@ lb config \
     --binary-images iso-hybrid \
     "$BOOTLOADER_PARAM" "$BOOTLOADER_VAL" \
     --bootappend-live "boot=live components quiet splash username=live hostname=lunova-live" \
-    --iso-application "Lunova OS 1.0 Aurora" \
+    --iso-application "Lunova OS 1.0.1 Aurora" \
     --iso-publisher "Lunova OS Engineering Team" \
-    --iso-volume "LUNOVA_1_0_0" \
+    --iso-volume "LUNOVA_1_0_1" \
     --linux-packages "linux-image linux-headers" \
     --linux-flavours amd64 \
     --memtest none \

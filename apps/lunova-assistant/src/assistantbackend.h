@@ -72,6 +72,11 @@ private:
     void loadHistory();
     void saveHistory();
     void appendMessage(const QString &sender, const QString &text, const QString &command = QString());
+
+    QString loadSecureApiKey();
+    void saveSecureApiKey(const QString &key);
+    bool validateCommand(const QString &commandLine, QString &binary, QStringList &args, QString &errorMessage) const;
 };
 
 #endif // ASSISTANTBACKEND_H
+

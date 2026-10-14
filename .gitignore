@@ -1,8 +1,8 @@
 # Build artifacts
-dist/*.iso
-dist/*.iso.zsync
-dist/*.raw
-dist/*.qcow2
+dist/
+test-results/
+test-results-*/
+*.qcow2
 cache/
 chroot/
 binary/

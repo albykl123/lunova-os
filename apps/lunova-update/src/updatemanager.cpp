@@ -35,7 +35,7 @@ void UpdateManager::checkForUpdates()
 
     m_isBusy = true;
     m_progressPercent = 10;
-    m_statusText = "Refreshing package indices and checking for updates...";
+    m_statusText = "Checking Debian repositories for available updates...";
     m_updates.clear();
     emit isBusyChanged();
     emit statusChanged();
@@ -46,8 +46,8 @@ void UpdateManager::checkForUpdates()
     connect(m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
             this, [this](int exitCode) { onCheckFinished(exitCode); });
 
-    // Use apt update simulation or pkcon
-    m_process->start("/bin/sh", QStringList() << "-c" << "apt-get update -qq && apt-get --just-print dist-upgrade");
+    // Execute structured apt-get simulation directly without invoking /bin/sh shell
+    m_process->start("/usr/bin/apt-get", QStringList() << "-s" << "-V" << "upgrade" << "--with-new-pkgs");
 }
 
 void UpdateManager::onCheckFinished(int exitCode)
@@ -57,8 +57,14 @@ void UpdateManager::onCheckFinished(int exitCode)
     emit isBusyChanged();
     emit progressChanged();
 
+    QString stdErr = QString::fromUtf8(m_process->readAllStandardError());
+
     if (exitCode != 0) {
-        m_statusText = "Unable to check updates. Please check network connection or repository access.";
+        if (stdErr.contains("dpkg was interrupted", Qt::CaseInsensitive) || stdErr.contains("lock", Qt::CaseInsensitive)) {
+            m_statusText = "Package manager lock detected. Please run 'sudo dpkg --configure -a' in Konsole to resolve.";
+        } else {
+            m_statusText = "Unable to check updates. Verify your network connection and repository mirrors.";
+        }
         emit statusChanged();
         return;
     }
@@ -86,9 +92,9 @@ void UpdateManager::parseAptOutput(const QString &output)
     }
 
     if (m_updates.isEmpty()) {
-        m_statusText = "Your system is up to date! No updates available.";
+        m_statusText = "Your system is up to date! All packages are at their latest versions.";
     } else {
-        m_statusText = QString("%1 package updates available.").arg(m_updates.size());
+        m_statusText = QString("%1 package update(s) ready to install.").arg(m_updates.size());
     }
 
     emit statusChanged();
@@ -102,7 +108,7 @@ void UpdateManager::applyUpdates()
 
     m_isBusy = true;
     m_progressPercent = 20;
-    m_statusText = "Applying system updates. Please authenticate if prompted...";
+    m_statusText = "Applying system updates. Please authenticate when prompted...";
     emit isBusyChanged();
     emit statusChanged();
     emit progressChanged();
@@ -112,8 +118,9 @@ void UpdateManager::applyUpdates()
     connect(m_process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
             this, [this](int exitCode) { onInstallFinished(exitCode); });
 
-    // Execute via pkexec ensuring proper policykit authentication
-    m_process->start("pkexec", QStringList() << "apt-get" << "dist-upgrade" << "-y");
+    // Execute safe non-destructive upgrade via pkexec directly without shell wrapper
+    // Uses 'upgrade --with-new-pkgs -y' to prevent removing essential desktop packages
+    m_process->start("/usr/bin/pkexec", QStringList() << "/usr/bin/apt-get" << "upgrade" << "--with-new-pkgs" << "-y");
 }
 
 void UpdateManager::onProcessOutput()
@@ -121,10 +128,10 @@ void UpdateManager::onProcessOutput()
     QString out = QString::fromUtf8(m_process->readAllStandardOutput());
     if (out.contains("Unpacking")) {
         m_progressPercent = 50;
-        m_statusText = "Unpacking packages...";
+        m_statusText = "Unpacking package updates...";
     } else if (out.contains("Setting up")) {
         m_progressPercent = 80;
-        m_statusText = "Configuring system packages...";
+        m_statusText = "Configuring upgraded packages...";
     }
     emit progressChanged();
     emit statusChanged();
@@ -141,8 +148,10 @@ void UpdateManager::onInstallFinished(int exitCode)
         m_statusText = "All updates installed successfully!";
         m_updates.clear();
         emit updateListChanged();
+    } else if (exitCode == 126 || exitCode == 127) {
+        m_statusText = "Installation cancelled: Authentication was not completed.";
     } else {
-        m_statusText = "Installation failed or was cancelled by user.";
+        m_statusText = "Update installation failed or was interrupted. Check system logs for details.";
     }
 
     emit statusChanged();
@@ -151,5 +160,5 @@ void UpdateManager::onInstallFinished(int exitCode)
 
 void UpdateManager::rebootSystem()
 {
-    QProcess::startDetached("systemctl", QStringList() << "reboot");
+    QProcess::startDetached("/usr/bin/systemctl", QStringList() << "reboot");
 }

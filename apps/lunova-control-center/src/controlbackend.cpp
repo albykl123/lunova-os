@@ -50,8 +50,11 @@ void ControlBackend::setPowerProfile(const QString &profile)
 
 void ControlBackend::openModule(const QString &moduleName)
 {
-    // Opens native KDE System Settings directly to that specific KCM
-    QProcess::startDetached("systemsettings", QStringList() << moduleName);
+    // Try kcmshell6 first for direct module launch in KDE Plasma 6, fallback to systemsettings
+    bool started = QProcess::startDetached("kcmshell6", QStringList() << moduleName);
+    if (!started) {
+        QProcess::startDetached("systemsettings", QStringList() << moduleName);
+    }
 }
 
 void ControlBackend::openApp(const QString &appName)

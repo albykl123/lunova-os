@@ -12,6 +12,6 @@ X-KDE-PluginInfo-Category=Plasma Look and Feel
 X-KDE-PluginInfo-Email=dev@lunova-os.org
 X-KDE-PluginInfo-License=GPL-3.0+
 X-KDE-PluginInfo-Name=org.lunova.aurora.desktop
-X-KDE-PluginInfo-Version=1.0.0
+X-KDE-PluginInfo-Version=1.0.1
 X-KDE-PluginInfo-Website=https://github.com/lunova-os/lunova-os
 X-Plasma-MainScript=defaults

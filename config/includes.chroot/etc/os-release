@@ -1,7 +1,7 @@
-PRETTY_NAME="Lunova OS 1.0.0 (Aurora)"
+PRETTY_NAME="Lunova OS 1.0.1 (Aurora)"
 NAME="Lunova OS"
-VERSION_ID="1.0.0"
-VERSION="1.0.0 (Aurora)"
+VERSION_ID="1.0.1"
+VERSION="1.0.1 (Aurora)"
 VERSION_CODENAME=aurora
 ID=lunova
 ID_LIKE=debian
@@ -9,5 +9,5 @@ HOME_URL="https://github.com/lunova-os/lunova-os"
 SUPPORT_URL="https://github.com/lunova-os/lunova-os/issues"
 BUG_REPORT_URL="https://github.com/lunova-os/lunova-os/issues"
 PRIVACY_POLICY_URL="https://github.com/lunova-os/lunova-os/wiki/Privacy"
-BUILD_ID="1.0.0-aurora-20261011"
+BUILD_ID="1.0.1-aurora-20261014"
 LOGO="lunova-logo"

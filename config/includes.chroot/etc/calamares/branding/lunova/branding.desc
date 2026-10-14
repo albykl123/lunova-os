@@ -13,7 +13,7 @@ windowPlacement: center
 strings:
     productName:         "Lunova OS"
     shortProductName:    "Lunova"
-    version:             "1.0.0"
+    version:             "1.0.1"
     shortVersion:        "1.0"
     versionCodename:     "Aurora"
     editionName:         "Desktop"

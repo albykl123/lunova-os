@@ -5,6 +5,29 @@ All notable changes to the Lunova OS distribution are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-10-14 - Codename "Aurora (Hardened Release)"
+
+### Security Hardening
+- **Lunova Assistant**:
+  - Replaced plaintext API key storage in `assistant.conf` with owner-restricted `0600` credential storage in `$XDG_DATA_HOME/lunova/assistant.key`.
+  - Eliminated arbitrary `/bin/sh -c` shell invocation for AI actions.
+  - Implemented strict allowlisted execution sandbox: only safe, read-only diagnostic utilities (`systemctl status`, `df`, `free`, `uname`, `ip addr`, `uptime`, `lsblk`, `lscpu`, `fastfetch`) without shell metacharacters, piping, or redirections are permitted.
+  - Enforced TLS 1.2+ encryption and 15-second network transfer timeouts for all external AI provider connections.
+- **Lunova Update**:
+  - Eliminated untrusted shell string execution; replaced with structured `QProcess` argument arrays.
+  - Switched update mechanism from `dist-upgrade` to non-destructive `upgrade --with-new-pkgs -y` to protect core desktop packages from accidental removal.
+  - Added robust detection and recovery advice for interrupted package manager locks (`dpkg --configure -a`).
+- **Lunova About**:
+  - Replaced `/bin/sh -c` shell pipe GPU detection with direct `lspci` execution and C++ parsing.
+  - Updated KDE Plasma fallback baseline to KDE Plasma 6.3+.
+- **Lunova Control Center**:
+  - Added support for KDE Plasma 6 native `kcmshell6` module launching with `systemsettings` fallback.
+
+### Added & Improved
+- Added `udisks2` to core package manifests for automated USB media detection and desktop automounting.
+- Added `power-profiles-daemon` and `brightnessctl` for seamless hardware power management and display control.
+- Updated all native application versions, build scripts, and installer branding to 1.0.1.
+
 ## [1.0.0] - 2026-10-11 - Codename "Aurora"
 
 ### Added

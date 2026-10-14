@@ -16,7 +16,7 @@ SystemInfo::SystemInfo(QObject *parent)
 void SystemInfo::loadSystemData()
 {
     m_osName = "Lunova OS";
-    m_version = "1.0.0";
+    m_version = "1.0.1";
     m_codename = "Aurora";
 
     // Read /etc/os-release

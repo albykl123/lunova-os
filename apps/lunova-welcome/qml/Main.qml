@@ -46,7 +46,7 @@ ApplicationWindow {
                             color: "#F5F7FF"
                         }
                         Text {
-                            text: "1.0.0 Aurora"
+                            text: "1.0.1 Aurora"
                             font.family: "Inter"
                             font.pixelSize: 12
                             color: "#59D9F8"

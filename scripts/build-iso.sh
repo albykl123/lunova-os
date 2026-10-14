@@ -7,7 +7,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 DIST_DIR="$ROOT_DIR/dist"
-ISO_NAME="Lunova-OS-1.0.0-Aurora-amd64.iso"
+ISO_NAME="Lunova-OS-1.0.1-Aurora-amd64.iso"
 TARGET_ISO="$DIST_DIR/$ISO_NAME"
 BUILD_LOG="$ROOT_DIR/build.log"
 
@@ -78,7 +78,7 @@ cat <<EOF > "$DIST_DIR/build-manifest.json"
 {
   "os": {
     "name": "Lunova OS",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "codename": "Aurora",
     "edition": "Desktop",
     "architecture": "x86_64",
@@ -104,7 +104,7 @@ EOF
 
 echo "[*] Step 6: Generating build report (dist/build-report.md)..."
 cat <<EOF > "$DIST_DIR/build-report.md"
-# Lunova OS 1.0 Aurora — Build Report
+# Lunova OS 1.0.1 Aurora — Build Report
 
 - **Date:** $BUILD_DATE
 - **Target ISO:** \`$ISO_NAME\`
@@ -117,11 +117,11 @@ cat <<EOF > "$DIST_DIR/build-report.md"
 - **Status:** **SUCCESS**
 
 ## Included Lunova Native Applications:
-1. \`lunova-welcome\` (v1.0.0)
-2. \`lunova-about\` (v1.0.0)
-3. \`lunova-control-center\` (v1.0.0)
-4. \`lunova-assistant\` (v1.0.0)
-5. \`lunova-update\` (v1.0.0)
+1. \`lunova-welcome\` (v1.0.1)
+2. \`lunova-about\` (v1.0.1)
+3. \`lunova-control-center\` (v1.0.1)
+4. \`lunova-assistant\` (v1.0.1)
+5. \`lunova-update\` (v1.0.1)
 EOF
 
 echo "=================================================================="

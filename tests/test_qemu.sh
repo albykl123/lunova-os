@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # ==============================================================================
 # Lunova OS 1.0 Aurora - Automated Virtual Machine Test Checklist
 # ==============================================================================
@@ -7,7 +7,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 DIST_DIR="$ROOT_DIR/dist"
-ISO_NAME="Lunova-OS-1.0.0-Aurora-amd64.iso"
+ISO_NAME="Lunova-OS-1.0.1-Aurora-amd64.iso"
 ISO_PATH="$DIST_DIR/$ISO_NAME"
 
 echo "=================================================================="

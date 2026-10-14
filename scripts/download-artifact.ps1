@@ -32,7 +32,7 @@ if (-not $locationLine) {
 }
 
 $downloadUrl = $locationLine.Matches.Groups[1].Value.Trim()
-$targetZip = Join-Path $DistDir "Lunova-OS-1.0.0-Aurora-Release.zip"
+$targetZip = Join-Path $DistDir "Lunova-OS-1.0.1-Aurora-Release.zip"
 
 Write-Host "==> Downloading artifact archive directly from blob storage..."
 Write-Host "    Target: $targetZip"
@@ -50,7 +50,7 @@ Write-Host "==> Download complete! Zip size: $zipSize bytes ($([math]::Round($zi
 Write-Host "==> Extracting ISO from zip archive..."
 Expand-Archive -Path $targetZip -DestinationPath $DistDir -Force
 
-$isoPath = Join-Path $DistDir "Lunova-OS-1.0.0-Aurora-amd64.iso"
+$isoPath = Join-Path $DistDir "Lunova-OS-1.0.1-Aurora-amd64.iso"
 if (-not (Test-Path $isoPath)) {
     throw "Expected ISO file not found after extraction: $isoPath"
 }

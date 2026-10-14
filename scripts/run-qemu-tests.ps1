@@ -9,7 +9,7 @@ $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RootDir = Split-Path -Parent $ScriptDir
 $DistDir = Join-Path $RootDir "dist"
-$IsoPath = Join-Path $DistDir "Lunova-OS-1.0.0-Aurora-amd64.iso"
+$IsoPath = Join-Path $DistDir "Lunova-OS-1.0.1-Aurora-amd64.iso"
 $TestDisk = Join-Path $RootDir "test-disk.qcow2"
 
 $QemuDir = "C:\Users\alber\.gemini\antigravity\scratch\tools\qemu"

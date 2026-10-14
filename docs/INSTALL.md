@@ -10,7 +10,7 @@ Lunova OS features a friendly, modern graphical installation powered by Calamare
 - Flash drive size: Minimum 8 GB
 - **On Linux (dd command):**
   ```bash
-  sudo dd if=Lunova-OS-1.0.0-Aurora-amd64.iso of=/dev/sdX bs=4M status=progress oflag=sync
+  sudo dd if=Lunova-OS-1.0.1-Aurora-amd64.iso of=/dev/sdX bs=4M status=progress oflag=sync
   ```
 - **On Windows:** Use Rufus with the following settings:
   - Partition scheme: **GPT**

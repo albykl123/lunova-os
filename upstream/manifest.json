@@ -1,6 +1,6 @@
 {
   "project": "Lunova OS",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "codename": "Aurora",
   "debianBase": "Debian GNU/Linux 13 (Trixie)",
   "upstreamSources": [

@@ -1,0 +1,26 @@
+# Ensure consistent LF line endings across platforms
+* text=auto eol=lf
+*.sh text eol=lf
+*.hook.chroot text eol=lf
+*.conf text eol=lf
+*.desc text eol=lf
+*.list.chroot text eol=lf
+*.desktop text eol=lf
+*.json text eol=lf
+*.qml text eol=lf
+*.cpp text eol=lf
+*.h text eol=lf
+*.svg text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+
+# Binary file types
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.fd binary
+*.iso binary
+*.qcow2 binary
+*.zip binary
+*.tar.* binary

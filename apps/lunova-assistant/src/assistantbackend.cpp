@@ -8,6 +8,9 @@
 #include <QDir>
 #include <QStandardPaths>
 #include <QRegularExpression>
+#include <QSslConfiguration>
+#include <QDateTime>
+#include <QFileDevice>
 
 AssistantBackend::AssistantBackend(QObject *parent)
     : QObject(parent),
@@ -23,6 +26,47 @@ AssistantBackend::AssistantBackend(QObject *parent)
     connect(m_netManager, &QNetworkAccessManager::finished, this, &AssistantBackend::onNetworkReply);
 }
 
+QString AssistantBackend::loadSecureApiKey()
+{
+    // Secure credential storage location with owner-only access permissions (0600)
+    QString keyDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/lunova";
+    QString keyPath = keyDir + "/assistant.key";
+    QFile keyFile(keyPath);
+    if (keyFile.exists() && keyFile.open(QIODevice::ReadOnly)) {
+        QByteArray data = keyFile.readAll().trimmed();
+        keyFile.close();
+        return QString::fromUtf8(data);
+    }
+
+    // Migration logic: if legacy plaintext assistant.conf contains an apiKey, migrate and purge
+    QString confPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/lunova/assistant.conf";
+    QSettings settings(confPath, QSettings::IniFormat);
+    if (settings.contains("apiKey")) {
+        QString oldKey = settings.value("apiKey").toString().trimmed();
+        settings.remove("apiKey");
+        settings.sync();
+        if (!oldKey.isEmpty()) {
+            saveSecureApiKey(oldKey);
+            return oldKey;
+        }
+    }
+    return QString();
+}
+
+void AssistantBackend::saveSecureApiKey(const QString &key)
+{
+    QString keyDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/lunova";
+    QDir().mkpath(keyDir);
+    QString keyPath = keyDir + "/assistant.key";
+    QFile keyFile(keyPath);
+    if (keyFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        keyFile.write(key.toUtf8());
+        keyFile.close();
+        // Restrict to user-only read/write permissions (POSIX 0600)
+        keyFile.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner);
+    }
+}
+
 void AssistantBackend::loadSettings()
 {
     QString confPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/lunova/assistant.conf";
@@ -30,7 +74,8 @@ void AssistantBackend::loadSettings()
     m_provider = settings.value("provider", "Local (Ollama / Llama.cpp)").toString();
     m_endpointUrl = settings.value("endpoint", "http://localhost:11434/api/generate").toString();
     m_modelName = settings.value("model", "mistral").toString();
-    m_apiKey = settings.value("apiKey", "").toString();
+    // Load credentials from hardened secure storage
+    m_apiKey = loadSecureApiKey();
 }
 
 void AssistantBackend::saveSettings()
@@ -42,7 +87,14 @@ void AssistantBackend::saveSettings()
     settings.setValue("provider", m_provider);
     settings.setValue("endpoint", m_endpointUrl);
     settings.setValue("model", m_modelName);
-    settings.setValue("apiKey", m_apiKey);
+    // Ensure secrets are never stored in plain text configuration files
+    if (settings.contains("apiKey")) {
+        settings.remove("apiKey");
+    }
+    settings.sync();
+
+    // Persist API credential separately with restrictive file permissions
+    saveSecureApiKey(m_apiKey);
 }
 
 void AssistantBackend::loadHistory()
@@ -101,8 +153,16 @@ bool AssistantBackend::isProcessing() const { return m_isProcessing; }
 QVariantList AssistantBackend::messages() const { return m_messages; }
 QString AssistantBackend::pendingCommand() const { return m_pendingCommand; }
 
-void AssistantBackend::setApiKey(const QString &key) { m_apiKey = key; saveSettings(); }
-QString AssistantBackend::getApiKey() const { return m_apiKey; }
+void AssistantBackend::setApiKey(const QString &key)
+{
+    m_apiKey = key;
+    saveSecureApiKey(m_apiKey);
+}
+
+QString AssistantBackend::getApiKey() const
+{
+    return m_apiKey;
+}
 
 void AssistantBackend::sendMessage(const QString &userText)
 {
@@ -114,10 +174,16 @@ void AssistantBackend::sendMessage(const QString &userText)
     emit isProcessingChanged();
     emit statusChanged();
 
-    // Prepare HTTP Request
+    // Prepare HTTP Request with TLS 1.2+ enforcement and 15s transfer timeout
     QUrl targetUrl(m_endpointUrl);
     QNetworkRequest request(targetUrl);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QSslConfiguration sslConf = QSslConfiguration::defaultConfiguration();
+    sslConf.setProtocol(QSsl::TlsV1_2OrLater);
+    request.setSslConfiguration(sslConf);
+    request.setTransferTimeout(15000); // 15 seconds timeout
+
     if (!m_apiKey.isEmpty()) {
         request.setRawHeader("Authorization", ("Bearer " + m_apiKey).toUtf8());
     }
@@ -149,7 +215,7 @@ void AssistantBackend::onNetworkReply(QNetworkReply *reply)
 
     if (reply->error() != QNetworkReply::NoError) {
         m_statusMessage = "Connection Error: " + reply->errorString();
-        appendMessage("assistant", "Unable to connect to AI provider: " + reply->errorString() + ". Verify that the local model runner or API credentials are functioning properly.");
+        appendMessage("assistant", "Unable to connect to AI provider (" + reply->errorString() + "). Please check that the local inference daemon or API endpoint is accessible.");
         emit statusChanged();
         reply->deleteLater();
         return;
@@ -192,6 +258,60 @@ void AssistantBackend::onNetworkReply(QNetworkReply *reply)
     emit statusChanged();
 }
 
+bool AssistantBackend::validateCommand(const QString &commandLine, QString &binary, QStringList &args, QString &errorMessage) const
+{
+    QString trimmed = commandLine.trimmed();
+    if (trimmed.isEmpty()) {
+        errorMessage = "Command line is empty.";
+        return false;
+    }
+
+    // Reject shell metacharacters, piping, redirection, chaining, subshells
+    static const QRegularExpression unsafeChars("[;&|><`$\\r\\n(){}\\\\]");
+    if (trimmed.contains(unsafeChars)) {
+        errorMessage = "Security violation: Shell chaining, pipes, redirection, subshells, and escapes are strictly disallowed.";
+        return false;
+    }
+
+    // Tokenize arguments without shell interpretation
+    QStringList tokens = trimmed.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+    if (tokens.isEmpty()) {
+        errorMessage = "Malformed command arguments.";
+        return false;
+    }
+
+    QString prog = tokens.first();
+    QString baseProg = prog.section('/', -1);
+
+    // Strict allowlist: safe read-only system diagnostic utilities only
+    static const QStringList allowedPrograms = {
+        "systemctl", "df", "free", "uname", "ip", "uptime", "lsblk", "lscpu", "fastfetch"
+    };
+
+    if (!allowedPrograms.contains(baseProg)) {
+        errorMessage = QString("Command '%1' is prohibited. Only safe read-only diagnostic utilities (%2) are authorized.")
+            .arg(baseProg, allowedPrograms.join(", "));
+        return false;
+    }
+
+    // Validate subcommand arguments for utilities with mutation subcommands
+    if (baseProg == "systemctl") {
+        if (tokens.size() < 2 || (tokens[1] != "status" && tokens[1] != "is-active" && tokens[1] != "list-units")) {
+            errorMessage = "Only read-only systemctl queries ('status', 'is-active', 'list-units') are allowed.";
+            return false;
+        }
+    } else if (baseProg == "ip") {
+        if (tokens.size() < 2 || (tokens[1] != "addr" && tokens[1] != "address" && tokens[1] != "link" && tokens[1] != "route")) {
+            errorMessage = "Only read-only network inspection commands ('ip addr', 'ip link', 'ip route') are allowed.";
+            return false;
+        }
+    }
+
+    binary = prog;
+    args = tokens.mid(1);
+    return true;
+}
+
 void AssistantBackend::approvePendingCommand()
 {
     if (m_pendingCommand.isEmpty()) return;
@@ -200,16 +320,32 @@ void AssistantBackend::approvePendingCommand()
     m_pendingCommand.clear();
     emit pendingCommandChanged();
 
-    appendMessage("system", "Executing authorized command: " + cmd);
+    QString binary;
+    QStringList args;
+    QString validationError;
+
+    if (!validateCommand(cmd, binary, args, validationError)) {
+        appendMessage("system", "Security Sandbox: " + validationError);
+        emit commandExecuted("Rejected by security policy: " + validationError);
+        return;
+    }
+
+    appendMessage("system", QString("Executing verified diagnostic utility: %1 %2").arg(binary, args.join(" ")));
 
     QProcess proc;
-    proc.start("/bin/sh", QStringList() << "-c" << cmd);
-    proc.waitForFinished(10000);
+    proc.start(binary, args);
+    if (!proc.waitForFinished(10000)) {
+        proc.kill();
+        appendMessage("system", "Error: Process execution timed out after 10 seconds.");
+        emit commandExecuted("Execution timed out.");
+        return;
+    }
+
     QString out = QString::fromUtf8(proc.readAllStandardOutput());
     QString err = QString::fromUtf8(proc.readAllStandardError());
 
     QString result = out.isEmpty() ? err : out;
-    if (result.isEmpty()) result = "Command completed successfully (no stdout).";
+    if (result.isEmpty()) result = "Command completed successfully (no stdout/stderr output).";
     appendMessage("system", "Result:\n" + result);
     emit commandExecuted(result);
 }
