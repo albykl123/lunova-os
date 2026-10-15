@@ -2,7 +2,7 @@
 # Lunova OS 1.0 Aurora - Direct Artifact Downloader and Checksum Verifier
 # ==============================================================================
 param(
-    [string]$ArtifactId = "11814935494"
+    [string]$ArtifactId = "11907905877"
 )
 
 $ErrorActionPreference = "Stop"
@@ -62,7 +62,7 @@ Write-Host "==> Computing independent SHA-256 cryptographic checksum..."
 $hash = (Get-FileHash -Path $isoPath -Algorithm SHA256).Hash.ToLower()
 Write-Host "==> Computed SHA-256: $hash"
 
-$expectedHash = "639885c70d3874d32061b7c4aef8ea174ffbe973b494d58cc9825f868d915e3e"
+$expectedHash = "bf5dc42aa3cad3ec408ff4b4c686ee042092eed21e3de1ec67cd352048250fed"
 Write-Host "==> Expected SHA-256: $expectedHash"
 
 if ($hash -eq $expectedHash) {
