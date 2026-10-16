@@ -7,7 +7,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 DIST_DIR="$ROOT_DIR/dist"
-ISO_NAME="Lunova-OS-1.0.1-Aurora-amd64.iso"
+ISO_NAME="Lunova-OS-1.0.2-Aurora-amd64.iso"
 TARGET_ISO="$DIST_DIR/$ISO_NAME"
 BUILD_LOG="$ROOT_DIR/build.log"
 
@@ -78,7 +78,7 @@ cat <<EOF > "$DIST_DIR/build-manifest.json"
 {
   "os": {
     "name": "Lunova OS",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "codename": "Aurora",
     "edition": "Desktop",
     "architecture": "x86_64",

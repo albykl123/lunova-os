@@ -1,7 +1,12 @@
-﻿#!/bin/sh
+#!/bin/sh
 set -e
 
 echo "==> Configuring Calamares Installer..."
+
+# Ensure Calamares elevated wrapper permissions
+if [ -f /usr/local/bin/calamares ]; then
+    chmod 0755 /usr/local/bin/calamares || true
+fi
 
 # Ensure Calamares launcher permissions
 chmod +x /usr/share/applications/install-lunova.desktop || true
@@ -9,9 +14,14 @@ if [ -d /etc/skel/Desktop ]; then
     chmod +x /etc/skel/Desktop/install-lunova.desktop || true
 fi
 
+# Ensure Polkit policy permissions
+if [ -f /etc/polkit-1/rules.d/49-calamares.rules ]; then
+    chmod 0644 /etc/polkit-1/rules.d/49-calamares.rules || true
+fi
+
 # Ensure passwordless sudo for live session installer execution
 mkdir -p /etc/sudoers.d
-echo "live ALL=(ALL) NOPASSWD: /usr/bin/calamares" > /etc/sudoers.d/99-calamares
+echo "live ALL=(ALL) NOPASSWD: /usr/bin/calamares, /usr/local/bin/calamares" > /etc/sudoers.d/99-calamares
 chmod 0440 /etc/sudoers.d/99-calamares
 
 echo "==> Calamares Installer configuration complete."

@@ -36,3 +36,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.log
+tests/*.bin
+tests/vm/
+isolinux/
+boot/grub/grub.cfg

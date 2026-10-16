@@ -48,7 +48,7 @@ echo "Testing /etc/os-release..."
 OS_RELEASE="$ROOT_DIR/config/includes.chroot/etc/os-release"
 check_file "$OS_RELEASE"
 check_contains "$OS_RELEASE" "NAME=\"Lunova OS\""
-check_contains "$OS_RELEASE" "VERSION_ID=\"1.0.1\""
+check_contains "$OS_RELEASE" "VERSION_ID=\"1.0.2\""
 check_contains "$OS_RELEASE" "ID_LIKE=debian"
 
 echo "Testing Calamares Configuration..."

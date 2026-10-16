@@ -1,0 +1,13 @@
+// ==============================================================================
+// Lunova OS 1.0.2 Aurora - Live Session Polkit Policy for Calamares
+// Allows the live session user to launch the system installer without prompting.
+// Automatically removed post-installation by shellprocess.
+// ==============================================================================
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.debian.pkexec.calamares" ||
+         action.id == "com.github.calamares.calamares" ||
+         action.id == "org.freedesktop.policykit.exec") &&
+        subject.isInGroup("sudo")) {
+        return polkit.Result.YES;
+    }
+});

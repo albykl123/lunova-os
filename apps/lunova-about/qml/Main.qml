@@ -42,7 +42,7 @@ ApplicationWindow {
                     color: "#F5F7FF"
                 }
                 Text {
-                    text: "Version 1.0.1 Aurora (x86-64)"
+                    text: "Version 1.0.2 Aurora (x86-64)"
                     font.family: "Inter"
                     font.pixelSize: 14
                     color: "#59D9F8"

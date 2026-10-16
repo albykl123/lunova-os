@@ -10,7 +10,7 @@ ApplicationWindow {
     height: 640
     minimumWidth: 840
     minimumHeight: 560
-    title: "Welcome to Lunova OS 1.0 Aurora"
+    title: "Welcome to Lunova OS 1.0.2 Aurora"
     color: "#080D1C"
 
     RowLayout {
@@ -46,7 +46,7 @@ ApplicationWindow {
                             color: "#F5F7FF"
                         }
                         Text {
-                            text: "1.0.1 Aurora"
+                            text: "1.0.2 Aurora"
                             font.family: "Inter"
                             font.pixelSize: 12
                             color: "#59D9F8"
@@ -195,7 +195,7 @@ ApplicationWindow {
                             text: "Install Lunova OS"
                             background: Rectangle { radius: 10; color: "#9270FF" }
                             contentItem: Text { text: "Install Lunova OS"; color: "white"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                            onClicked: systemInfo.launchCommand("pkexec calamares")
+                            onClicked: systemInfo.launchCommand("/usr/local/bin/calamares -d")
                         }
                     }
                 }

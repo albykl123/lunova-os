@@ -1,0 +1,11 @@
+#!/bin/sh
+# ==============================================================================
+# Lunova OS 1.0.2 Aurora - Calamares Elevated Launcher Wrapper
+# Guarantees Calamares executes with root privileges seamlessly in live session.
+# ==============================================================================
+
+if [ "$(id -u)" -ne 0 ]; then
+    exec sudo -E /usr/bin/calamares "$@"
+else
+    exec /usr/bin/calamares "$@"
+fi

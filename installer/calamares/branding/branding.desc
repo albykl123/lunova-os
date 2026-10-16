@@ -1,5 +1,5 @@
 # ==============================================================================
-# Lunova OS 1.0 Aurora - Calamares Branding Descriptor
+# Lunova OS 1.0.2 Aurora - Calamares Branding Descriptor
 # ==============================================================================
 
 ---
@@ -7,30 +7,31 @@ componentName:  lunova
 welcomeStyleCalamares: false
 welcomeExpandingLogo: true
 windowExpanding: normal
-windowSize: 850px,580px
+windowSize: 880px,600px
 windowPlacement: center
 
 strings:
     productName:         "Lunova OS"
     shortProductName:    "Lunova"
-    version:             "1.0.1"
+    version:             "1.0.2"
     shortVersion:        "1.0"
     versionCodename:     "Aurora"
     editionName:         "Desktop"
     bootloaderEntryName: "Lunova OS"
-    productUrl:          "https://github.com/lunova-os/lunova-os"
-    supportUrl:          "https://github.com/lunova-os/lunova-os/issues"
-    knownIssuesUrl:      "https://github.com/lunova-os/lunova-os/issues"
-    releaseNotesUrl:     "https://github.com/lunova-os/lunova-os/releases"
-    donateUrl:           "https://github.com/lunova-os/lunova-os"
+    productUrl:          "https://github.com/albykl123/lunova-os"
+    supportUrl:          "https://github.com/albykl123/lunova-os/issues"
+    knownIssuesUrl:      "https://github.com/albykl123/lunova-os/issues"
+    releaseNotesUrl:     "https://github.com/albykl123/lunova-os/releases"
+    donateUrl:           "https://github.com/albykl123/lunova-os"
 
 images:
     productLogo:         "lunova-installer.svg"
     productIcon:         "lunova-icon.svg"
-    productWelcome:      "welcome.png"
+
+slideshow: "show.qml"
 
 style:
-   SidebarBackground:    "#10182D"
-   SidebarText:          "#F5F7FF"
-   SidebarTextCurrent:   "#59D9F8"
+   SidebarBackground:        "#10182D"
+   SidebarText:              "#F5F7FF"
+   SidebarTextCurrent:       "#59D9F8"
    SidebarBackgroundCurrent: "#16203C"

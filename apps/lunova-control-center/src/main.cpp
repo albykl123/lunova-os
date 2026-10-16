@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     app.setApplicationName("Lunova Control Center");
-    app.setApplicationVersion("1.0.1");
+    app.setApplicationVersion("1.0.2");
     app.setOrganizationName("LunovaOS");
     app.setWindowIcon(QIcon(":/icons/lunova-icon.svg"));
 
