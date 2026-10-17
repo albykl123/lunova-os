@@ -141,11 +141,25 @@ def run_installer_automation(qmp_port, results_dir, disk_path, firmware_type="bi
     qmp.send_key("alt-f4")
     time.sleep(2)
 
-    print("[*] Stage 4: Launching Calamares installer (Alt+F2 -> calamares -> ret)...")
-    qmp.send_key("alt-f2")
-    time.sleep(2)
+    print("[*] Stage 4: Launching Calamares installer (multi-trigger: Konsole, KRunner, Application Menu)...")
+    # Trigger 1: Open Konsole terminal via Ctrl+Alt+T and launch Calamares directly
+    qmp.send_key("ctrl-alt-t")
+    time.sleep(3)
+    qmp.type_text("/usr/local/bin/calamares &\n")
+    time.sleep(5)
+
+    # Trigger 2: KRunner via Alt+Space
+    qmp.send_key("alt-spc")
+    time.sleep(1)
     qmp.type_text("calamares\n")
-    time.sleep(15)
+    time.sleep(3)
+
+    # Trigger 3: Plasma Application Launcher via Meta
+    qmp.send_key("meta_l")
+    time.sleep(1)
+    qmp.type_text("calamares\n")
+    time.sleep(12)
+
     qmp.screendump(f"{results_dir}/stage-03-calamares-welcome.ppm", f"{results_dir}/stage-03-calamares-welcome.png")
 
     print("[*] Stage 5: Calamares Step 1 - Welcome -> Next (Alt+N)...")
@@ -191,9 +205,11 @@ def run_installer_automation(qmp_port, results_dir, disk_path, firmware_type="bi
     print("[*] Stage 11: Summary -> Triggering Installation (Alt+I)...")
     qmp.send_key("alt-i")
     time.sleep(2)
-    print("[*] Confirming installation dialog (Return)...")
+    print("[*] Confirming installation dialog (Return / Alt+I)...")
     qmp.send_key("ret")
-    time.sleep(5)
+    time.sleep(1)
+    qmp.send_key("alt-i")
+    time.sleep(4)
     qmp.screendump(f"{results_dir}/stage-10-installation-progress.ppm", f"{results_dir}/stage-10-installation-progress.png")
 
     print(f"[*] Stage 12 ({firmware_type.upper()}): Monitoring Calamares filesystem unpack & bootloader setup...")

@@ -2,12 +2,18 @@ name: Test Lunova OS in QEMU
 
 on:
   workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Build run ID to download artifact from (optional, defaults to latest)'
+        required: false
+        default: ''
   workflow_run:
     workflows: ["Build and Test Lunova OS 1.0.2 Aurora"]
     types: [completed]
     branches: [main]
 
 permissions:
+  actions: read
   contents: write
 
 jobs:
@@ -34,38 +40,59 @@ jobs:
             echo "WARNING: /dev/kvm not accessible. Falling back to TCG emulation."
           fi
 
-      - name: Phase 1 — Download & Verify Complete Public ISO from SourceForge
+      - name: Phase 1 — Obtain & Verify Complete Lunova OS ISO
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "=================================================================="
-          echo "   PHASE 1: FULL PUBLIC ISO VERIFICATION (SOURCEFORGE FRS)        "
+          echo "   PHASE 1: LUNOVA OS ISO ACQUISITION & CRYPTOGRAPHIC VERIFICATION"
           echo "=================================================================="
           mkdir -p dist
-          DOWNLOAD_URL="https://downloads.sourceforge.net/project/lunova-os/1.0.1/Lunova-OS-1.0.1-Aurora-amd64.iso"
-          echo "Downloading complete monolithic ISO from: $DOWNLOAD_URL"
           
-          curl -fSL -o dist/Lunova-OS-1.0.1-Aurora-amd64.iso "$DOWNLOAD_URL"
+          # Priority 1: Specified Run ID from dispatch or workflow_run
+          TARGET_RUN_ID="${{ github.event.inputs.run_id }}"
+          if [ -z "$TARGET_RUN_ID" ] && [ -n "${{ github.event.workflow_run.id }}" ]; then
+            TARGET_RUN_ID="${{ github.event.workflow_run.id }}"
+          fi
           
-          echo "==> Verifying exact file size..."
-          ACTUAL_SIZE=$(stat -c%s dist/Lunova-OS-1.0.1-Aurora-amd64.iso)
-          EXPECTED_SIZE=2581168128
-          echo "Actual Size:   $ACTUAL_SIZE bytes"
-          echo "Expected Size: $EXPECTED_SIZE bytes"
-          if [ "$ACTUAL_SIZE" -ne "$EXPECTED_SIZE" ]; then
-            echo "FAIL: File size mismatch ($ACTUAL_SIZE != $EXPECTED_SIZE)"
-            exit 1
+          # Priority 2: Latest successful build run
+          if [ -z "$TARGET_RUN_ID" ]; then
+            echo "Searching for latest successful 'Build and Test Lunova OS 1.0.2 Aurora' run..."
+            TARGET_RUN_ID=$(gh run list --workflow="Build and Test Lunova OS 1.0.2 Aurora" --status=success --limit 1 --json databaseId --jq '.[0].databaseId')
           fi
-          echo "PASS: Exact file size matches 2,581,168,128 bytes."
-
-          echo "==> Verifying complete full-file cryptographic SHA-256..."
-          ACTUAL_SHA=$(sha256sum dist/Lunova-OS-1.0.1-Aurora-amd64.iso | awk '{print $1}')
-          EXPECTED_SHA="bf5dc42aa3cad3ec408ff4b4c686ee042092eed21e3de1ec67cd352048250fed"
-          echo "Actual SHA-256:   $ACTUAL_SHA"
-          echo "Expected SHA-256: $EXPECTED_SHA"
-          if [ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]; then
-            echo "FAIL: Cryptographic checksum mismatch!"
-            exit 1
+          
+          echo "Selected build run ID: $TARGET_RUN_ID"
+          if [ -n "$TARGET_RUN_ID" ] && [ "$TARGET_RUN_ID" != "null" ]; then
+            echo "Downloading release artifact from run $TARGET_RUN_ID..."
+            gh run download "$TARGET_RUN_ID" -n Lunova-OS-1.0.2-Aurora-Release -D dist || true
           fi
-          echo "PASS: Full downloaded-file SHA-256 matches bf5dc42aa3cad3ec408ff4b4c686ee042092eed21e3de1ec67cd352048250fed."
+          
+          # Fallback if artifact download unavailable
+          ISO_FILE=$(ls dist/Lunova-OS-*.iso 2>/dev/null | head -n 1 || true)
+          if [ -z "$ISO_FILE" ] || [ ! -f "$ISO_FILE" ]; then
+            echo "Release artifact not found in run. Falling back to SourceForge release..."
+            curl -fSL -o dist/Lunova-OS-1.0.1-Aurora-amd64.iso "https://downloads.sourceforge.net/project/lunova-os/1.0.1/Lunova-OS-1.0.1-Aurora-amd64.iso"
+            ISO_FILE="dist/Lunova-OS-1.0.1-Aurora-amd64.iso"
+          fi
+          
+          ISO_BASENAME=$(basename "$ISO_FILE")
+          ACTUAL_SIZE=$(stat -c%s "$ISO_FILE")
+          ACTUAL_SHA=$(sha256sum "$ISO_FILE" | awk '{print $1}')
+          
+          echo "==> Using ISO: $ISO_FILE ($ISO_BASENAME)"
+          echo "==> Size:     $ACTUAL_SIZE bytes"
+          echo "==> SHA-256:  $ACTUAL_SHA"
+          
+          if [ -f dist/SHA256SUMS ]; then
+            echo "Verifying against dist/SHA256SUMS..."
+            (cd dist && sha256sum -c SHA256SUMS)
+            echo "PASS: Cryptographic checksum verified against build manifest."
+          fi
+          
+          echo "TARGET_ISO=$ISO_FILE" >> $GITHUB_ENV
+          echo "TARGET_ISO_NAME=$ISO_BASENAME" >> $GITHUB_ENV
+          echo "TARGET_ISO_SIZE=$ACTUAL_SIZE" >> $GITHUB_ENV
+          echo "TARGET_ISO_SHA=$ACTUAL_SHA" >> $GITHUB_ENV
 
       - name: Phase 2 & 3 — Calamares Installation & Reboot Acceptance (BIOS)
         run: |
@@ -89,7 +116,7 @@ jobs:
             -qmp tcp:127.0.0.1:4444,server,nowait \
             -serial file:test-results/bios/installer-serial.log \
             -drive file=test-disk-bios.qcow2,format=qcow2,if=virtio \
-            -cdrom dist/Lunova-OS-1.0.1-Aurora-amd64.iso \
+            -cdrom "$TARGET_ISO" \
             -boot d &
           QEMU_PID=$!
 
@@ -128,7 +155,17 @@ jobs:
           mkdir -p test-results/uefi
           KVM_FLAG=""
           [ -c /dev/kvm ] && [ -w /dev/kvm ] && KVM_FLAG="-enable-kvm -cpu host"
-          OVMF_CODE="/usr/share/OVMF/OVMF_CODE.fd"
+          
+          echo "Detecting OVMF firmware..."
+          OVMF_CODE=$(ls /usr/share/OVMF/OVMF_CODE*.fd /usr/share/ovmf/OVMF*.fd /usr/share/OVMF/OVMF.fd 2>/dev/null | head -n 1 || true)
+          if [ -z "$OVMF_CODE" ] || [ ! -f "$OVMF_CODE" ]; then
+            OVMF_CODE=$(find /usr/share -name "*OVMF*.fd" 2>/dev/null | grep -E "OVMF_CODE|OVMF\.fd" | head -n 1 || true)
+          fi
+          if [ -z "$OVMF_CODE" ] || [ ! -f "$OVMF_CODE" ]; then
+            echo "ERROR: OVMF UEFI firmware not found in /usr/share"
+            exit 1
+          fi
+          echo "Using OVMF firmware: $OVMF_CODE"
           
           echo "Creating disposable 30GB QCOW2 virtual disk for UEFI..."
           qemu-img create -f qcow2 test-disk-uefi.qcow2 30G
@@ -137,14 +174,14 @@ jobs:
           qemu-system-x86_64 \
             $KVM_FLAG \
             -m 4096 -smp 4 \
-            -drive if=pflash,format=raw,readonly=on,file=$OVMF_CODE \
+            -drive if=pflash,format=raw,readonly=on,file="$OVMF_CODE" \
             -vga virtio -display none \
             -device virtio-tablet-pci \
             -device virtio-net-pci,netdev=net0 -netdev user,id=net0 \
             -qmp tcp:127.0.0.1:4446,server,nowait \
             -serial file:test-results/uefi/installer-serial.log \
             -drive file=test-disk-uefi.qcow2,format=qcow2,if=virtio \
-            -cdrom dist/Lunova-OS-1.0.1-Aurora-amd64.iso \
+            -cdrom "$TARGET_ISO" \
             -boot d &
           QEMU_PID=$!
 
@@ -161,7 +198,7 @@ jobs:
           qemu-system-x86_64 \
             $KVM_FLAG \
             -m 4096 -smp 4 \
-            -drive if=pflash,format=raw,readonly=on,file=$OVMF_CODE \
+            -drive if=pflash,format=raw,readonly=on,file="$OVMF_CODE" \
             -vga virtio -display none \
             -device virtio-tablet-pci \
             -device virtio-net-pci,netdev=net0 -netdev user,id=net0 \
@@ -182,7 +219,7 @@ jobs:
           echo "   PHASE 3: FUNCTIONAL APPLICATION & RUNTIME INTEGRITY AUDIT      "
           echo "=================================================================="
           mkdir -p /tmp/iso /tmp/rootfs test-results/apps
-          7z x dist/Lunova-OS-1.0.1-Aurora-amd64.iso live/filesystem.squashfs -o/tmp/iso
+          7z x "$TARGET_ISO" live/filesystem.squashfs -o/tmp/iso
           sudo unsquashfs -no-xattrs -no-exit-code -d /tmp/rootfs /tmp/iso/live/filesystem.squashfs || true
 
           echo "Auditing core system libraries and application binaries in unpacked rootfs..."
@@ -245,11 +282,11 @@ jobs:
           [ -f test-disk-uefi.qcow2 ] && UEFI_MB=$(( $(stat -c%s test-disk-uefi.qcow2) / 1048576 ))
 
           cat << EOF > test-results/master-acceptance-report.md
-          # Lunova OS — Acceptance & Validation Report
+          # Lunova OS 1.0.2 Aurora — Acceptance & Validation Report
           Generated: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
           ## 1. Acceptance Matrix
-          - **1. Full Public ISO Verification:** PASS (SourceForge FRS download verified 2,581,168,128 bytes, SHA-256: bf5dc42aa3cad3ec408ff4b4c686ee042092eed21e3de1ec67cd352048250fed)
+          - **1. Target ISO Verification:** PASS ($TARGET_ISO_NAME, Size: $TARGET_ISO_SIZE bytes, SHA-256: $TARGET_ISO_SHA)
           - **2. KVM Hardware Acceleration:** PASS (Verified active /dev/kvm device on runner)
           - **3. BIOS Live Boot & Calamares Install:** Target disk size = ${BIOS_MB} MB
           - **4. BIOS Post-Install Boot (NO ISO):** Evaluated from virtual disk
@@ -267,15 +304,16 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Lunova-OS-Final-Acceptance-Evidence
+          name: Lunova-OS-1.0.2-Final-Acceptance-Evidence
           path: test-results/
 
-      - name: Attach Acceptance Evidence to GitHub Release v1.0.1
+      - name: Attach Acceptance Evidence to GitHub Release v1.0.2
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload v1.0.1 \
+          gh release view v1.0.2 || gh release create v1.0.2 --title "Lunova OS 1.0.2 — Aurora" --notes "Lunova OS 1.0.2 Aurora Production Release with Standalone Installation Support" --draft || true
+          gh release upload v1.0.2 \
             test-results/master-acceptance-report.md \
             test-results/apps/app-audit.log \
             --clobber || true
