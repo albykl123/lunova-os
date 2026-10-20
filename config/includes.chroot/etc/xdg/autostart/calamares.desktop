@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Install Lunova OS
+GenericName=Live System Installer
+Comment=Install Lunova OS permanently to your computer
+Exec=/usr/local/bin/calamares
+Icon=calamares
+Terminal=false
+Categories=Qt;System;
+StartupNotify=true
+OnlyShowIn=KDE;

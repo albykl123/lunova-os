@@ -116,53 +116,44 @@ class QmpClient:
                 pass
 
 
+import sys
+import os
+
+# Ensure unbuffered output for real-time CI logs
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(line_buffering=True)
+
 def run_installer_automation(qmp_port, results_dir, disk_path, firmware_type="bios"):
     os.makedirs(results_dir, exist_ok=True)
     qmp = QmpClient(qmp_port)
 
     wait_boot = 8 if firmware_type == "uefi" else 22
-    print(f"[*] Stage 1 ({firmware_type.upper()}): Waiting {wait_boot} seconds for bootloader menu...")
+    print(f"[*] Stage 1 ({firmware_type.upper()}): Waiting {wait_boot} seconds for bootloader menu...", flush=True)
     time.sleep(wait_boot)
     qmp.screendump(f"{results_dir}/stage-01-bootloader.ppm", f"{results_dir}/stage-01-bootloader.png")
 
-    print(f"[*] Stage 1 ({firmware_type.upper()}): Sending Return to boot Live session...")
+    print(f"[*] Stage 1 ({firmware_type.upper()}): Sending Return to boot Live session...", flush=True)
     qmp.send_key("ret")
     time.sleep(3)
     if firmware_type == "bios":
         qmp.send_key("ret")
 
-    print(f"[*] Stage 2 ({firmware_type.upper()}): Waiting 75 seconds for Linux kernel, systemd & KDE Plasma 6 desktop...")
-    time.sleep(75)
+    print(f"[*] Stage 2 ({firmware_type.upper()}): Waiting 85 seconds for Linux kernel, KDE Plasma 6 desktop & Calamares...", flush=True)
+    time.sleep(85)
     qmp.screendump(f"{results_dir}/stage-02-live-desktop.ppm", f"{results_dir}/stage-02-live-desktop.png")
 
-    print("[*] Stage 3: Dismissing Welcome windows (Alt+F4)...")
-    qmp.send_key("alt-f4")
-    time.sleep(2)
-    qmp.send_key("alt-f4")
-    time.sleep(2)
+    print("[*] Stage 3: Checking if Calamares installer is already active...", flush=True)
+    qmp.screendump(f"{results_dir}/stage-03-calamares-welcome.ppm", f"{results_dir}/stage-03-calamares-welcome.png")
 
-    print("[*] Stage 4: Launching Calamares installer (multi-trigger: Konsole, KRunner, Application Menu)...")
-    # Trigger 1: Open Konsole terminal via Ctrl+Alt+T and launch Calamares directly
-    qmp.send_key("ctrl-alt-t")
-    time.sleep(3)
-    qmp.type_text("/usr/local/bin/calamares &\n")
-    time.sleep(5)
-
-    # Trigger 2: KRunner via Alt+Space
+    # If Calamares is not focused, trigger via KRunner / Application Menu
+    print("[*] Stage 4: Ensuring Calamares focus / launching if needed...", flush=True)
     qmp.send_key("alt-spc")
     time.sleep(1)
     qmp.type_text("calamares\n")
-    time.sleep(3)
-
-    # Trigger 3: Plasma Application Launcher via Meta
-    qmp.send_key("meta_l")
-    time.sleep(1)
-    qmp.type_text("calamares\n")
-    time.sleep(12)
-
+    time.sleep(5)
     qmp.screendump(f"{results_dir}/stage-03-calamares-welcome.ppm", f"{results_dir}/stage-03-calamares-welcome.png")
 
-    print("[*] Stage 5: Calamares Step 1 - Welcome -> Next (Alt+N)...")
+    print("[*] Stage 5: Calamares Step 1 - Welcome -> Next (Alt+N)...", flush=True)
     qmp.send_key("alt-n")
     time.sleep(3)
     qmp.screendump(f"{results_dir}/stage-04-calamares-location.ppm", f"{results_dir}/stage-04-calamares-location.png")
@@ -219,7 +210,7 @@ def run_installer_automation(qmp_port, results_dir, disk_path, firmware_type="bi
         time.sleep(15)
         cur_size = os.path.getsize(disk_path) if os.path.exists(disk_path) else 0
         cur_mb = round(cur_size / (1024 * 1024), 2)
-        print(f"[*] Install Progress Check {cycle}: Virtual disk size = {cur_mb} MB")
+        print(f"[*] Install Progress Check {cycle}: Virtual disk size = {cur_mb} MB", flush=True)
         qmp.screendump(f"{results_dir}/stage-11-progress-{cycle}.ppm", f"{results_dir}/stage-11-progress-{cycle}.png")
 
         if cur_size > 1500 * 1024 * 1024:

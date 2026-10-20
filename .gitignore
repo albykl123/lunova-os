@@ -1,9 +1,12 @@
 # Build artifacts
 dist/
+dist-*/
 test-results/
 test-results-*/
+test-evidence*/
 *.qcow2
 *.ppm
+*.zip
 cache/
 chroot/
 binary/
